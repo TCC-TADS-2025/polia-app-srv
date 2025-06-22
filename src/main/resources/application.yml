@@ -1,3 +1,14 @@
+info:
+  app:
+    name: "PoliAI"
+    version: "1.0.0"
+    description: "Esse é nosso projeto de TCC para o curso de Tecnólogo em Análise e Desenvolvimento de Sistemas"
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
 spring:
   application:
     name: polia-app-srv
@@ -18,11 +29,6 @@ spring:
 jwt:
   secret: wu9VYp7NkD3Gq1rLv2xE5zP8cJ6bX9mQ0oA4fK7yH1tS5dF3gU6iW4nM2jR9eB0vC8lO5pI3hT7kY2
   expiration: 86400000 # 24 hours in milliseconds
-
-server:
-  port: 8080
-  servlet:
-    context-path: /api
 
 springdoc:
   api-docs:
