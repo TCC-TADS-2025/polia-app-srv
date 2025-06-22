@@ -7,10 +7,14 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.sql.Clob;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "candidates")
@@ -19,12 +23,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Candidate {
 
-    //@GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-    
     @Id
-    @Column(nullable = false)
-    private String cpf;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id;
 
     @Column(nullable = false)
     @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
@@ -88,5 +89,11 @@ public class Candidate {
 
     @Column(nullable = false)
     private Clob proposals;
+
+    @CreationTimestamp
+    private LocalDateTime dataInclusao;
+
+    @UpdateTimestamp
+    private LocalDateTime dataAlteracao;
 
 }
