@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: polia-app-srv
+  datasource:
+    url: jdbc:postgresql://localhost:5432/polia_db
+    username: polia_user
+    password: polia_pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+jwt:
+  secret: wu9VYp7NkD3Gq1rLv2xE5zP8cJ6bX9mQ0oA4fK7yH1tS5dF3gU6iW4nM2jR9eB0vC8lO5pI3hT7kY2
+  expiration: 86400000 # 24 hours in milliseconds
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
