@@ -1,11 +1,14 @@
 package br.com.tads.polia.poliaappsrv.domain.enums;
 
 public enum LevelOfEducation {
-    Fundamenal,
-    Medio,
-    Superior,
-    Pos_graduacao,
-    Mestrado,
-    Doutorado,
-    Nao_informado
+    FUNDAMENTAL,
+    MEDIO,
+    SUPERIOR,
+    POS_GRADUACAO,
+    MESTRADO,
+    DOUTORADO,
+    OTHER;
+    public String getDescription() {
+        return this.name();
+    }
 }
