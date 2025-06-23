@@ -20,10 +20,10 @@ public class CandidateResponse implements Serializable {
     private String nationality;
     private Gender gender;
     private Race race;
-    private CivilStatus civilStatus;
+    private CivilState civilStatus;
     private LevelOfEducation levelOfEducation;
     private String occupation;
-    private Reelection reelection;
+    private boolean reelection;
     private String coalition;
     private String position;
     private Party party;
@@ -31,5 +31,5 @@ public class CandidateResponse implements Serializable {
     private String city;
     private Integer candidacyNumber;
     private Double candidateAsset;
-    private List<String> proposals;
+    private String proposals;
 }

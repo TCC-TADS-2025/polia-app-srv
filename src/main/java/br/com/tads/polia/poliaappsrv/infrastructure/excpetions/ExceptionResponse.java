@@ -12,7 +12,7 @@ public record ExceptionResponse(
         int statusCode,
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime dateTime,
-        List<FieldError> errors
+        List<FieldError> fieldErrors
 ) {
     public record FieldError(String field, String message) {
     }

@@ -23,9 +23,12 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Candidate {
 
+    private String id;
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    @Column(nullable = false, unique = true)
+    @Size(min = 11, max = 11, message = "CPF deve ter exatamente 11 caracteres") 
+    private String cpf;
 
     @Column(nullable = false)
     @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
@@ -87,8 +90,9 @@ public class Candidate {
     @Column(nullable = false)
     private BigDecimal candidateAsset;
 
+    @Lob
     @Column(nullable = false)
-    private Clob proposals;
+    private String proposals;
 
     @CreationTimestamp
     private LocalDateTime dataInclusao;

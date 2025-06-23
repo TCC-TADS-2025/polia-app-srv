@@ -19,10 +19,8 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CandidateMapper {
 
-    @Mapping(target = "proposals", qualifiedByName = "clobToString")
     CandidateDTO toDTO(Candidate candidate);
     
-    @Mapping(target = "proposals", qualifiedByName = "stringToClob")
     Candidate toEntity(CandidateDTO candidateDTO);
     
     @Mapping(target = "proposals", qualifiedByName = "clobToString")

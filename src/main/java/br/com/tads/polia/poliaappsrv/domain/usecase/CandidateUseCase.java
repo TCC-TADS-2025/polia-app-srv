@@ -6,6 +6,8 @@ import br.com.tads.polia.poliaappsrv.domain.dto.candidate.CandidateDTO;
 import br.com.tads.polia.poliaappsrv.domain.entity.Candidate;
 import br.com.tads.polia.poliaappsrv.infrastructure.mappers.CandidateMapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class CandidateUseCase {
     @Autowired
     private CandidateRepository candidateRepository;
     
+    @Transactional
     public CandidateDTO createCandidate(CandidateDTO dto) {
         Candidate entity = candidateMapper.toEntity(dto);
         entity = candidateRepository.save(entity);

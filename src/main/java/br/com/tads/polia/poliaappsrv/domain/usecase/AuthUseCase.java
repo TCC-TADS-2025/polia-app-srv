@@ -1,5 +1,6 @@
 package br.com.tads.polia.poliaappsrv.domain.usecase;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,8 @@ import br.com.tads.polia.poliaappsrv.domain.dto.auth.RegisterDTO;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.TokenSubjectDTO;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.UserDTO;
 import br.com.tads.polia.poliaappsrv.domain.entity.User;
+import br.com.tads.polia.poliaappsrv.domain.exception.CpfAlredyExistsException;
+import br.com.tads.polia.poliaappsrv.domain.exception.EmailAlredyExistsException;
 import br.com.tads.polia.poliaappsrv.infrastructure.mappers.UserMapper;
 import br.com.tads.polia.poliaappsrv.infrastructure.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +55,10 @@ public class AuthUseCase {
 
     public TokenSubjectDTO register(RegisterDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.email())) {
-            throw new RuntimeException("Email já cadastrado");
+            throw new EmailAlredyExistsException();
+        }
+        if (userRepository.existsByCpf(userDTO.cpf())) {
+            throw new CpfAlredyExistsException();
         }
 
         User user = userMapper.fromRegister(userDTO);
@@ -68,5 +74,9 @@ public class AuthUseCase {
             .accessToken(jwt)
             .user(userMapper.toDTO(user))
             .build();
+    }
+
+    public List<User> getAll() {
+        return userRepository.findAll();
     }
 }

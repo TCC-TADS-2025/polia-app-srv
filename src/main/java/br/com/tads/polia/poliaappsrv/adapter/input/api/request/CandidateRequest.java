@@ -18,7 +18,7 @@ public class CandidateRequest implements Serializable {
     private String nationality;
     private Gender gender;
     private Race race;
-    private CivilStatus civilStatus;
+    private CivilState civilStatus;
     private LevelOfEducation levelOfEducation;
     private String occupation;
     private Reelection reelection;
@@ -29,6 +29,6 @@ public class CandidateRequest implements Serializable {
     private String city;
     private Integer candidacyNumber;
     private Double candidateAsset;
-    private List<String> proposals;
+    private String proposals;
 
 }
