@@ -11,7 +11,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.sql.Clob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,13 +21,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Candidate {
-
-    private String id;
     
     @Id
-    @Column(nullable = false, unique = true)
-    @Size(min = 11, max = 11, message = "CPF deve ter exatamente 11 caracteres") 
-    private String cpf;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id;
 
     @Column(nullable = false)
     @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
@@ -62,7 +58,7 @@ public class Candidate {
     private String occupation;
 
     @Column(nullable = false)
-    private Boolean reelection;
+    private Reelection reelection;
 
     @Column(nullable = false)
     @Size(min = 2, max = 100, message = "Coligação deve ter entre 2 e 100 caracteres")
@@ -74,7 +70,7 @@ public class Candidate {
 
     @Column(nullable = false)
     @Size(min = 2, max = 100, message = "Partido deve ter entre 2 e 100 caracteres")
-    private String party;
+    private Party party;
 
     @Column(nullable = false)
     @Size(min = 2, max = 100, message = "Estado deve ter entre 2 e 100 caracteres")

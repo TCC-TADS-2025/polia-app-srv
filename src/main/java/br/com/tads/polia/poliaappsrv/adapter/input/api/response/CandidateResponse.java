@@ -23,7 +23,7 @@ public class CandidateResponse implements Serializable {
     private CivilState civilStatus;
     private LevelOfEducation levelOfEducation;
     private String occupation;
-    private boolean reelection;
+    private Reelection reelection;
     private String coalition;
     private String position;
     private Party party;

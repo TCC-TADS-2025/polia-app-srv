@@ -1,74 +1,45 @@
 package br.com.tads.polia.poliaappsrv.domain.dto.candidate;
 
 import br.com.tads.polia.poliaappsrv.domain.enums.*;
-import br.com.tads.polia.poliaappsrv.infrastructure.config.ClobDeserializer;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Clob;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 
-public record CandidateDTO(
-    @JsonProperty("id")
-    String id,
+public class CandidateDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-    @JsonProperty("cpf")
-    String cpf,
-    
-    @JsonProperty("name")
-    String name,
-    
-    @JsonProperty("birthday")
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    LocalDate birthday,
-    
-    @JsonProperty("nationality")
-    String nationality,
-    
-    @JsonProperty("gender")
-    Gender gender,
-    
-    @JsonProperty("race")
-    Race race,
-    
-    @JsonProperty("civilStatus")
-    CivilState civilStatus,
-    
-    @JsonProperty("levelOfEducation")
-    String levelOfEducation,
-    
-    @JsonProperty("occupation")
-    String occupation,
-    
-    @JsonProperty("reelection")
-    Boolean reelection,
-    
-    @JsonProperty("coalition")
-    String coalition,
-    
-    @JsonProperty("position")
-    String position,
-    
-    @JsonProperty("party")
-    String party,
-    
-    @JsonProperty("state")
-    String state,
-    
-    @JsonProperty("city")
-    String city,
-    
-    @JsonProperty("candidacyNumber")
-    Integer candidacyNumber,
-    
-    @JsonProperty("candidateAsset")
-    BigDecimal candidateAsset,
-    
-    @JsonProperty("proposals")
-    String proposals
-) {
+    private UUID id;
+    private String name;
+    private LocalDate birthday;
+    private String nationality;
+    private Gender gender;
+    private Race race;
+    private CivilState civilStatus;
+    private LevelOfEducation levelOfEducation;
+    private String occupation;
+    private Reelection reelection;
+    private String coalition;
+    private String position;
+    private Party party;
+    private String state;
+    private String city;
+    private Integer candidacyNumber;
+    private BigDecimal candidateAsset;
+    private String proposals;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAlteracao;
+
     
 }

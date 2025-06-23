@@ -1,5 +1,8 @@
 package br.com.tads.polia.poliaappsrv.adapter.input.controllers;
 
+import br.com.tads.polia.poliaappsrv.adapter.input.api.request.CandidateRequest;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.request.mapper.CandidateMapper;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.response.CandidateResponse;
 import br.com.tads.polia.poliaappsrv.domain.dto.candidate.CandidateDTO;
 import br.com.tads.polia.poliaappsrv.domain.usecase.CandidateUseCase;
 import jakarta.validation.Valid;
@@ -9,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -19,9 +23,10 @@ public class CandidateController {
     private CandidateUseCase candidateUseCase;
 
     @PostMapping
-    public ResponseEntity<CandidateDTO> createCandidate(@Valid @RequestBody CandidateDTO candidateDTO) {
-        CandidateDTO createdCandidate = candidateUseCase.createCandidate(candidateDTO);
-        return new ResponseEntity<>(createdCandidate, HttpStatus.CREATED);
+    public ResponseEntity<CandidateResponse> createCandidate(@Valid @RequestBody CandidateRequest candidateRequest) {
+        CandidateDTO candidateDTO = candidateUseCase.createCandidate(CandidateMapper.INSTANCE.CandidateResquestToCandidateDTO(candidateRequest));
+        CandidateResponse candidateResponse = br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.CandidateMapper.INSTANCE.CanidateDTOToCandidateResponse(candidateDTO);
+        return new ResponseEntity<>(candidateResponse, HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -30,23 +35,24 @@ public class CandidateController {
         return ResponseEntity.ok(candidates);
     }
 
-    @GetMapping("/{cpf}")
-    public ResponseEntity<CandidateDTO> getCandidateById(@PathVariable String cpf) {
-        CandidateDTO candidate = candidateUseCase.getCandidateById(cpf);
+    @GetMapping("/{id}")
+    public ResponseEntity<CandidateDTO> getCandidateById(@PathVariable UUID id) {
+        CandidateDTO candidate = candidateUseCase.getCandidateById(id);
         return ResponseEntity.ok(candidate);
     }
 
-    @PutMapping("/{cpf}")
-    public ResponseEntity<CandidateDTO> updateCandidate(
-            @PathVariable String cpf,
-            @Valid @RequestBody CandidateDTO candidateDTO) {
-        CandidateDTO updatedCandidate = candidateUseCase.updateCandidate(cpf, candidateDTO);
-        return ResponseEntity.ok(updatedCandidate);
+    @PutMapping("/{id}")
+    public ResponseEntity<CandidateResponse> updateCandidate(
+            @PathVariable UUID id,
+            @RequestBody @Valid CandidateRequest candidateRequest) {
+        CandidateDTO candidateDTO = candidateUseCase.updateCandidate(id,CandidateMapper.INSTANCE.CandidateResquestToCandidateDTO(candidateRequest));
+        CandidateResponse candidateResponse = br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.CandidateMapper.INSTANCE.CanidateDTOToCandidateResponse(candidateDTO);
+        return ResponseEntity.ok().body(candidateResponse);
     }
 
-    @DeleteMapping("/{cpf}")
-    public ResponseEntity<Void> deleteCandidate(@PathVariable String cpf) {
-        candidateUseCase.deleteCandidate(cpf);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCandidate(@PathVariable UUID id) {
+        candidateUseCase.deleteCandidate(id);
         return ResponseEntity.noContent().build();
     }
 }
