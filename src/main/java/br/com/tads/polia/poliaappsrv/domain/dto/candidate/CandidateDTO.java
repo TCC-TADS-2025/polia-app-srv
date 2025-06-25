@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Clob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Data
 @AllArgsConstructor
@@ -22,6 +22,7 @@ public class CandidateDTO implements Serializable {
 
     private UUID id;
     private String name;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate birthday;
     private String nationality;
     private Gender gender;
@@ -29,10 +30,10 @@ public class CandidateDTO implements Serializable {
     private CivilState civilStatus;
     private LevelOfEducation levelOfEducation;
     private String occupation;
-    private Reelection reelection;
+    private Boolean reelection;
     private String coalition;
     private String position;
-    private Party party;
+    private String party;
     private String state;
     private String city;
     private Integer candidacyNumber;
@@ -41,5 +42,4 @@ public class CandidateDTO implements Serializable {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAlteracao;
 
-    
 }

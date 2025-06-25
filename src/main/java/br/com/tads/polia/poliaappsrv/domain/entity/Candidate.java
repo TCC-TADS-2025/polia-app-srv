@@ -1,6 +1,5 @@
 package br.com.tads.polia.poliaappsrv.domain.entity;
 
-
 import br.com.tads.polia.poliaappsrv.domain.enums.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -21,9 +20,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Candidate {
-    
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(nullable = false)
@@ -58,7 +57,7 @@ public class Candidate {
     private String occupation;
 
     @Column(nullable = false)
-    private Reelection reelection;
+    private Boolean reelection;
 
     @Column(nullable = false)
     @Size(min = 2, max = 100, message = "Coligação deve ter entre 2 e 100 caracteres")
@@ -70,7 +69,7 @@ public class Candidate {
 
     @Column(nullable = false)
     @Size(min = 2, max = 100, message = "Partido deve ter entre 2 e 100 caracteres")
-    private Party party;
+    private String party;
 
     @Column(nullable = false)
     @Size(min = 2, max = 100, message = "Estado deve ter entre 2 e 100 caracteres")
