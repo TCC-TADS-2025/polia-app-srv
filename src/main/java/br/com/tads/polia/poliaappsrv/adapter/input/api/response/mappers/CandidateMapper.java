@@ -10,6 +10,6 @@ public interface CandidateMapper {
 
     CandidateMapper INSTANCE = Mappers.getMapper(CandidateMapper.class);
 
-    CandidateResponse CanidateDTOToCandidateResponse(CandidateDTO candidatedto);
+    CandidateResponse CandidateDTOToCandidateResponse(CandidateDTO candidatedto);
 
 }

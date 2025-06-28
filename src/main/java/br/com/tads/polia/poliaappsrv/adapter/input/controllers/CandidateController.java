@@ -25,7 +25,7 @@ public class CandidateController {
     @PostMapping
     public ResponseEntity<CandidateResponse> createCandidate(@Valid @RequestBody CandidateRequest candidateRequest) {
         CandidateDTO candidateDTO = candidateUseCase.createCandidate(CandidateMapper.INSTANCE.CandidateResquestToCandidateDTO(candidateRequest));
-        CandidateResponse candidateResponse = br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.CandidateMapper.INSTANCE.CanidateDTOToCandidateResponse(candidateDTO);
+        CandidateResponse candidateResponse = br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.CandidateMapper.INSTANCE.CandidateDTOToCandidateResponse(candidateDTO);
         return new ResponseEntity<>(candidateResponse, HttpStatus.CREATED);
     }
 
@@ -46,7 +46,7 @@ public class CandidateController {
             @PathVariable UUID id,
             @RequestBody @Valid CandidateRequest candidateRequest) {
         CandidateDTO candidateDTO = candidateUseCase.updateCandidate(id,CandidateMapper.INSTANCE.CandidateResquestToCandidateDTO(candidateRequest));
-        CandidateResponse candidateResponse = br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.CandidateMapper.INSTANCE.CanidateDTOToCandidateResponse(candidateDTO);
+        CandidateResponse candidateResponse = br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.CandidateMapper.INSTANCE.CandidateDTOToCandidateResponse(candidateDTO);
         return ResponseEntity.ok().body(candidateResponse);
     }
 

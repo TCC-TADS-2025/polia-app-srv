@@ -1,7 +1,7 @@
 package br.com.tads.polia.poliaappsrv.infrastructure.mappers;
 
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.RegisterDTO;
-import br.com.tads.polia.poliaappsrv.domain.dto.auth.UserDTO;
+import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
 import br.com.tads.polia.poliaappsrv.domain.entity.User;
 
 import java.util.List;

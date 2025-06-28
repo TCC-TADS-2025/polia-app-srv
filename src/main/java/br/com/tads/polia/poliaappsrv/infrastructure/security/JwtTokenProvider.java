@@ -9,8 +9,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import br.com.tads.polia.poliaappsrv.domain.dto.auth.UserDTO;
-import br.com.tads.polia.poliaappsrv.domain.entity.User;
+import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
+
 import java.security.Key;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;

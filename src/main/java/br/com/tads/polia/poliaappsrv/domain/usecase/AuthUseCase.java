@@ -14,7 +14,7 @@ import br.com.tads.polia.poliaappsrv.adapter.output.repositories.UserRepository;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.LoginDTO;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.RegisterDTO;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.TokenSubjectDTO;
-import br.com.tads.polia.poliaappsrv.domain.dto.auth.UserDTO;
+import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
 import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import br.com.tads.polia.poliaappsrv.domain.exception.CpfAlredyExistsException;
 import br.com.tads.polia.poliaappsrv.domain.exception.EmailAlredyExistsException;
