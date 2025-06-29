@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/users")
@@ -26,5 +28,25 @@ public class UserController {
         UserResponse userResponse = UserMapperResponse.INSTANCE.userDTOToUserResponse(userDTO);
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
+
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> userDTOs = userUseCase.getAllUsers();
+        return ResponseEntity.ok(userDTOs);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
+        UserDTO userDTO = userUseCase.getUserById(id);
+        return ResponseEntity.ok(userDTO);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+        userUseCase.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
