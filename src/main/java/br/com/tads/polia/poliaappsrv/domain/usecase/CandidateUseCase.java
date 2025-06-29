@@ -1,6 +1,5 @@
 package br.com.tads.polia.poliaappsrv.domain.usecase;
 
-
 import br.com.tads.polia.poliaappsrv.adapter.output.repositories.CandidateRepository;
 import br.com.tads.polia.poliaappsrv.domain.dto.candidate.CandidateDTO;
 import br.com.tads.polia.poliaappsrv.domain.entity.Candidate;
@@ -19,10 +18,10 @@ public class CandidateUseCase {
 
     @Autowired
     private CandidateMapper candidateMapper;
-    
+
     @Autowired
     private CandidateRepository candidateRepository;
-    
+
     @Transactional
     public CandidateDTO createCandidate(CandidateDTO dto) {
         Candidate candidate = new Candidate();
@@ -46,7 +45,7 @@ public class CandidateUseCase {
         candidateRepository.save(candidate);
         return dto;
     }
-    
+
     public List<CandidateDTO> getAllCandidates() {
         List<Candidate> candidates = candidateRepository.findAll();
         return candidateMapper.toDTOList(candidates);
@@ -54,7 +53,7 @@ public class CandidateUseCase {
 
     public CandidateDTO getCandidateById(UUID id) {
         Candidate candidate = candidateRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Candidate not found with ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Candidate not found with ID: " + id));
         return candidateMapper.toDTO(candidate);
     }
 
@@ -63,6 +62,7 @@ public class CandidateUseCase {
             throw new EntityNotFoundException("Candidate not found with ID: " + id);
         }
         Candidate candidateToUpdate = new Candidate();
+        candidateToUpdate.setId(id);
         candidateToUpdate.setName(candidateDTO.getName());
         candidateToUpdate.setBirthday(candidateDTO.getBirthday());
         candidateToUpdate.setNationality(candidateDTO.getNationality());
@@ -81,7 +81,7 @@ public class CandidateUseCase {
         candidateToUpdate.setCandidateAsset(candidateDTO.getCandidateAsset());
         candidateToUpdate.setProposals(candidateDTO.getProposals());
         Candidate updatedCandidate = candidateRepository.save(candidateToUpdate);
-        
+
         return candidateMapper.toDTO(updatedCandidate);
     }
 
