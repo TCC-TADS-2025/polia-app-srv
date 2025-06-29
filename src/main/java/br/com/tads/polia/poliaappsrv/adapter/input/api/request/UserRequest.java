@@ -1,15 +1,17 @@
 package br.com.tads.polia.poliaappsrv.adapter.input.api.request;
 
+import br.com.tads.polia.poliaappsrv.domain.enums.Role;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.io.Serializable;
+import lombok.NoArgsConstructor;
 
 @Data
-public class UserRequest implements Serializable {
-    private static final long serialVersionUID = 1L;
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserRequest {
 
     private String name;
     private String email;
-    private String cpf;
-    private String phone;
+    private String password;
+    private String confirmPassword;
 }

@@ -28,10 +28,7 @@ public class UserDTO {
     private String phone;
     @JsonIgnore
     private String password;
-    private boolean enabled;
     private Role role;
     @Builder.Default
     private List<String> authorities = new ArrayList<>();
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

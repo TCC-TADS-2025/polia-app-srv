@@ -38,9 +38,9 @@ public class User implements UserDetails{
     private String email;
     @Column(nullable = false)
     private String name;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String cpf;
-    @Column(nullable = false)
+    @Column(unique = true)
     private String phone;
     @Column(nullable = false)
     private String password;

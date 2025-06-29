@@ -1,7 +1,8 @@
 package br.com.tads.polia.poliaappsrv.domain.enums;
 
 public enum Role {
-    ADMIN;
+    ADMIN,
+    USER;
     public String getDescription() {
         return this.name();
     }

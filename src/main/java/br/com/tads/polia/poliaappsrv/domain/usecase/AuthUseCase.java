@@ -3,6 +3,9 @@ package br.com.tads.polia.poliaappsrv.domain.usecase;
 import java.util.List;
 import java.util.UUID;
 
+import br.com.tads.polia.poliaappsrv.adapter.input.api.request.AdminRequest;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.request.UserRequest;
+import br.com.tads.polia.poliaappsrv.domain.enums.Role;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -53,17 +56,17 @@ public class AuthUseCase {
             .build();
     }
 
-    public TokenSubjectDTO register(RegisterDTO userDTO) {
-        if (userRepository.existsByEmail(userDTO.email())) {
+    public TokenSubjectDTO register(AdminRequest adminRequest) {
+        if (userRepository.existsByEmail(adminRequest.getEmail())) {
             throw new EmailAlredyExistsException();
         }
-        if (userRepository.existsByCpf(userDTO.cpf())) {
+        if (userRepository.existsByCpf(adminRequest.getCpf())) {
             throw new CpfAlredyExistsException();
         }
 
-        User user = userMapper.fromRegister(userDTO);
+        User user = userMapper.fromRegister(adminRequest);
         user.setId(UUID.randomUUID().toString());
-        user.setPassword(passwordEncoder.encode(userDTO.password()));
+        user.setPassword(passwordEncoder.encode(adminRequest.getPassword()));
         user.setEnabled(true);
 
         user = userRepository.save(user);
@@ -75,6 +78,28 @@ public class AuthUseCase {
             .user(userMapper.toDTO(user))
             .build();
     }
+
+    public TokenSubjectDTO registerUser(UserRequest userRequest) {
+        if (userRepository.existsByEmail(userRequest.getEmail())) {
+            throw new EmailAlredyExistsException();
+        }
+
+        User user = userMapper.fromRegisterUserRequest(userRequest);
+        user.setId(UUID.randomUUID().toString());
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setEnabled(true);
+        user.setRole(Role.USER);
+
+        user = userRepository.save(user);
+
+        String jwt = jwtTokenProvider.generateToken(userMapper.toDTO(user));
+
+        return TokenSubjectDTO.builder()
+                .accessToken(jwt)
+                .user(userMapper.toDTO(user))
+                .build();
+    }
+
 
     public List<User> getAll() {
         return userRepository.findAll();
