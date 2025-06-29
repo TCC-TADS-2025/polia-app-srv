@@ -5,5 +5,6 @@ public enum Race {
     BLACK,
     BROWN,
     ASIAN,
-    OTHER
+    OTHER,
+    NOT_INFORMED;
 }

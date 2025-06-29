@@ -7,7 +7,9 @@ public enum LevelOfEducation {
     POS_GRADUACAO,
     MESTRADO,
     DOUTORADO,
-    OTHER;
+    OTHER,
+    NOT_INFORMED;
+
     public String getDescription() {
         return this.name();
     }
