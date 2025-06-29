@@ -6,9 +6,9 @@ import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface UserMapper {
+public interface UserMapperResponse {
 
-    UserMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(UserMapper.class);
+    UserMapperResponse INSTANCE = org.mapstruct.factory.Mappers.getMapper(UserMapperResponse.class);
 
     UserResponse userDTOToUserResponse(UserDTO userDTO);
 }

@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper
-public interface UserMapper {
+public interface UserMapperRequest {
 
-    UserMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(UserMapper.class);
+    UserMapperRequest INSTANCE = org.mapstruct.factory.Mappers.getMapper(UserMapperRequest.class);
 
     UserDTO UserRequestToUserDTO(UserRequest request);
 
