@@ -1,4 +1,4 @@
-package br.com.tads.polia.poliaappsrv.domain.entity;
+package br.com.tads.polia.poliaappsrv.adapter.output.bd;
 
 import br.com.tads.polia.poliaappsrv.domain.enums.*;
 import jakarta.persistence.*;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Candidate {
+public class CandidateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

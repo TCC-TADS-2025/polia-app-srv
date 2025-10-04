@@ -1,8 +1,8 @@
 package br.com.tads.polia.poliaappsrv.domain.usecase;
 
-import br.com.tads.polia.poliaappsrv.adapter.output.repositories.UserRepository;
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.UserEntity;
+import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
 import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
-import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import br.com.tads.polia.poliaappsrv.domain.enums.Role;
 import br.com.tads.polia.poliaappsrv.infrastructure.mappers.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,7 +21,7 @@ public class UserUseCase {
     private UserRepository userRepository;
 
     public UserDTO createUser(UserDTO dto) {
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setCpf(dto.getCpf());
@@ -34,18 +34,18 @@ public class UserUseCase {
     }
 
     public List<UserDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
+        List<UserEntity> users = userRepository.findAll();
         return userMapper.toDTOList(users);
     }
 
     public UserDTO getUserById(String id) {
-        User user = userRepository.findById(id)
+        UserEntity user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
         return userMapper.toDTO(user);
     }
 
     public void deleteUser(String id) {
-        User user = userRepository.findById(id)
+        UserEntity user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
         userRepository.deleteById(id);
     }
