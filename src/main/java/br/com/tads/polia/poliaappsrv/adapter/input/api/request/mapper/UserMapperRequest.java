@@ -2,8 +2,8 @@ package br.com.tads.polia.poliaappsrv.adapter.input.api.request.mapper;
 
 
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.AdminRequest;
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.UserEntity;
 import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
-import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import org.mapstruct.Mapper;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -18,7 +18,7 @@ public interface UserMapperRequest {
 
     UserDTO UserRequestToUserDTO(AdminRequest request);
 
-    UserDTO userToUserDTO(User user);
+    UserDTO userToUserDTO(UserEntity user);
 
     default List<String> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
         if (authorities == null) return null;

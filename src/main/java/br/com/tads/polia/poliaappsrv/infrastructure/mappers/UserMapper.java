@@ -2,9 +2,8 @@ package br.com.tads.polia.poliaappsrv.infrastructure.mappers;
 
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.AdminRequest;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.UserRequest;
-import br.com.tads.polia.poliaappsrv.domain.dto.auth.RegisterDTO;
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.UserEntity;
 import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
-import br.com.tads.polia.poliaappsrv.domain.entity.User;
 
 import java.util.List;
 
@@ -19,15 +18,15 @@ public interface UserMapper {
                         + ".stream()"
                         + ".map(org.springframework.security.core.GrantedAuthority::getAuthority)"
                         + ".collect(java.util.stream.Collectors.toList()))")
-    UserDTO toDTO(User user);
+    UserDTO toDTO(UserEntity user);
     
-    User toEntity(UserDTO userDTO);
+    UserEntity toEntity(UserDTO userDTO);
     
-    List<UserDTO> toDTOList(List<User> users);
+    List<UserDTO> toDTOList(List<UserEntity> users);
     
-    List<User> toEntityList(List<UserDTO> userDTOs);
+    List<UserEntity> toEntityList(List<UserDTO> userDTOs);
 
-    User fromRegister(AdminRequest adminRequest);
+    UserEntity fromRegister(AdminRequest adminRequest);
 
-    User fromRegisterUserRequest(UserRequest userRequest);
+    UserEntity fromRegisterUserRequest(UserRequest userRequest);
 }

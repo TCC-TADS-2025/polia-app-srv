@@ -1,8 +1,8 @@
 package br.com.tads.polia.poliaappsrv.domain.usecase;
 
-import br.com.tads.polia.poliaappsrv.adapter.output.repositories.CandidateRepository;
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.CandidateEntity;
+import br.com.tads.polia.poliaappsrv.port.output.bd.repository.CandidateRepository;
 import br.com.tads.polia.poliaappsrv.domain.dto.candidate.CandidateDTO;
-import br.com.tads.polia.poliaappsrv.domain.entity.Candidate;
 import br.com.tads.polia.poliaappsrv.infrastructure.mappers.CandidateMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -24,7 +24,7 @@ public class CandidateUseCase {
 
     @Transactional
     public CandidateDTO createCandidate(CandidateDTO dto) {
-        Candidate candidate = new Candidate();
+        CandidateEntity candidate = new CandidateEntity();
         candidate.setName(dto.getName());
         candidate.setBirthday(dto.getBirthday());
         candidate.setNationality(dto.getNationality());
@@ -47,12 +47,12 @@ public class CandidateUseCase {
     }
 
     public List<CandidateDTO> getAllCandidates() {
-        List<Candidate> candidates = candidateRepository.findAll();
+        List<br.com.tads.polia.poliaappsrv.adapter.output.bd.CandidateEntity> candidates = candidateRepository.findAll();
         return candidateMapper.toDTOList(candidates);
     }
 
     public CandidateDTO getCandidateById(UUID id) {
-        Candidate candidate = candidateRepository.findById(id)
+        CandidateEntity candidate = candidateRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Candidate not found with ID: " + id));
         return candidateMapper.toDTO(candidate);
     }
@@ -61,7 +61,7 @@ public class CandidateUseCase {
         if (!candidateRepository.existsById(id)) {
             throw new EntityNotFoundException("Candidate not found with ID: " + id);
         }
-        Candidate candidateToUpdate = new Candidate();
+        CandidateEntity candidateToUpdate = new CandidateEntity();
         candidateToUpdate.setId(id);
         candidateToUpdate.setName(candidateDTO.getName());
         candidateToUpdate.setBirthday(candidateDTO.getBirthday());
@@ -80,7 +80,7 @@ public class CandidateUseCase {
         candidateToUpdate.setCandidacyNumber(candidateDTO.getCandidacyNumber());
         candidateToUpdate.setCandidateAsset(candidateDTO.getCandidateAsset());
         candidateToUpdate.setProposals(candidateDTO.getProposals());
-        Candidate updatedCandidate = candidateRepository.save(candidateToUpdate);
+        CandidateEntity updatedCandidate = candidateRepository.save(candidateToUpdate);
 
         return candidateMapper.toDTO(updatedCandidate);
     }

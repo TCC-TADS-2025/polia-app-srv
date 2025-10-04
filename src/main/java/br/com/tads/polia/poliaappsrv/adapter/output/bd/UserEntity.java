@@ -1,4 +1,4 @@
-package br.com.tads.polia.poliaappsrv.domain.entity;
+package br.com.tads.polia.poliaappsrv.adapter.output.bd;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User implements UserDetails{
+public class UserEntity implements UserDetails{
     @Id
     private String id;
     @Column(unique = true, nullable = false)

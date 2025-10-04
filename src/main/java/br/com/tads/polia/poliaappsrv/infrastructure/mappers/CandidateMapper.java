@@ -1,33 +1,31 @@
 package br.com.tads.polia.poliaappsrv.infrastructure.mappers;
 
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.CandidateEntity;
 import br.com.tads.polia.poliaappsrv.domain.dto.candidate.CandidateDTO;
-import br.com.tads.polia.poliaappsrv.domain.entity.Candidate;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 
+import javax.sql.rowset.serial.SerialClob;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.sql.rowset.serial.SerialClob;
-
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
-
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CandidateMapper {
 
-    CandidateDTO toDTO(Candidate candidate);
+    CandidateDTO toDTO(CandidateEntity candidate);
     
-    Candidate toEntity(CandidateDTO candidateDTO);
+    CandidateEntity toEntity(CandidateDTO candidateDTO);
     
     @Mapping(target = "proposals", qualifiedByName = "clobToString")
-    List<CandidateDTO> toDTOList(List<Candidate> candidates);
+    List<CandidateDTO> toDTOList(List<CandidateEntity> candidates);
     
     @Mapping(target = "proposals", qualifiedByName = "stringToClob")
-    List<Candidate> toEntityList(List<CandidateDTO> candidateDTOs);
+    List<CandidateEntity> toEntityList(List<CandidateDTO> candidateDTOs);
 
     @Named("clobToString")
     static String clobToString(Clob clob) {
