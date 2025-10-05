@@ -13,7 +13,6 @@ import java.util.UUID;
 public class Weight {
     private UUID idQuestionWeight;
     private String type;
-//    private BigDecimal weight;
     private Integer weightX;
     private Integer weightY;
     private UUID question;
