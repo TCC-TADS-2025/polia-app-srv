@@ -1,6 +1,7 @@
 package br.com.tads.polia.poliaappsrv.adapter.input.controllers;
 
 import br.com.tads.polia.poliaappsrv.domain.entity.Question;
+import br.com.tads.polia.poliaappsrv.domain.entity.Weight;
 import br.com.tads.polia.poliaappsrv.domain.usecase.QuestionUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,6 +26,15 @@ public class QuestionController {
     @GetMapping
     public ResponseEntity<List<Question>> getAllQuestions() {
         var result = questionUseCase.getAllQuestions();
+        if(result == null || result.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/weights")
+    public ResponseEntity<List<Weight>> getAllQuestionWeights() {
+        var result = questionUseCase.getAllQuestionWeights();
         if(result == null || result.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
