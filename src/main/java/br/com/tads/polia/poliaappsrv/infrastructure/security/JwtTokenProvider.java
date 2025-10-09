@@ -1,5 +1,6 @@
 package br.com.tads.polia.poliaappsrv.infrastructure.security;
 
+import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -40,6 +41,21 @@ public class JwtTokenProvider {
                 .signWith(key)
                 .compact();
     }
+
+    public String generateTokenAdmin(Admin admin) {
+        Map<String, Object> claims = new HashMap<>();
+        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        claims.put("admin", admin);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(admin.getId())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(key)
+                .compact();
+    }
+
 
     public boolean validateToken(String token) {
        try {

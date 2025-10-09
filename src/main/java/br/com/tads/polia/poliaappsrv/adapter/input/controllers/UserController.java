@@ -28,11 +28,11 @@ public class UserController {
     @Autowired
     private AuthUseCase authUseCase;
 
-    @PostMapping("/admin")
-    public ResponseEntity<TokenSubjectDTO> registerAdmin(@RequestBody AdminRequest adminRequest) {
-        TokenSubjectDTO response = authUseCase.register(adminRequest);
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping("/admin")
+//    public ResponseEntity<TokenSubjectDTO> registerAdmin(@RequestBody AdminRequest adminRequest) {
+//        TokenSubjectDTO response = authUseCase.register(adminRequest);
+//        return ResponseEntity.ok(response);
+//    }
 
     @PostMapping()
     public ResponseEntity<TokenSubjectDTO> registerUser(@RequestBody UserRequest userRequest) {
