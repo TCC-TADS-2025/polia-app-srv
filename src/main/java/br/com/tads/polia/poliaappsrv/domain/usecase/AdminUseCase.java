@@ -2,6 +2,7 @@ package br.com.tads.polia.poliaappsrv.domain.usecase;
 
 import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
 import br.com.tads.polia.poliaappsrv.port.output.IAdminOutputPort;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,20 @@ public class AdminUseCase {
             throw new IllegalArgumentException("ID cannot be null or empty");
         }
         return outputPort.getAdminById(id);
+    }
+
+    public void deleteAdminBy(String id) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
+        }
+        outputPort.deleteAdminBy(id);
+    }
+
+    public  Admin updateAdminById(String id, Admin admin) {
+        if (admin == null || Strings.isEmpty(id)) {
+            throw new IllegalArgumentException("Admin or Admin ID cannot be null or empty");
+        }
+        return outputPort.updateAdminById(id,admin);
     }
 
 

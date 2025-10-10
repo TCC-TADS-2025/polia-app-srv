@@ -5,6 +5,7 @@ import br.com.tads.polia.poliaappsrv.adapter.output.mapper.AdminOutputMapper;
 import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
 import br.com.tads.polia.poliaappsrv.port.output.IAdminOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.AdminRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,9 +49,30 @@ public class AdminOutputPort implements IAdminOutputPort {
     @Override
     public Admin getAdminById(String id) {
         var result = MAPPER.adminEntityToAdmin(adminRepository.findById(id).orElse(null));
-        if(result == null) {
+        if (result == null) {
             return null;
         }
         return result;
     }
+
+    @Override
+    public void deleteAdminBy(String id) {
+        AdminEntity admin = adminRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Admin not found with ID: " + id));
+        adminRepository.deleteById(id);
+    }
+
+    @Override
+    public Admin updateAdminById(String id, Admin admin) {
+        var result = MAPPER.adminEntityToAdmin(adminRepository.findById(id).orElse(null));
+        if (result == null) {
+            return null;
+        }
+        result.setName(admin.getName());
+        result.setEmail(admin.getEmail());
+        result.setPhone(admin.getPhone());
+        adminRepository.save(MAPPER.adminToAdminEntity(result));
+        return result;
+    }
+
+
 }

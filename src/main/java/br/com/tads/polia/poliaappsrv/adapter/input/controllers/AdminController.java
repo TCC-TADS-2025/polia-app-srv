@@ -9,7 +9,6 @@ import br.com.tads.polia.poliaappsrv.domain.dto.auth.TokenSubjectAdminDTO;
 import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
 import br.com.tads.polia.poliaappsrv.domain.usecase.AdminUseCase;
 import br.com.tads.polia.poliaappsrv.domain.usecase.AuthUseCase;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +44,7 @@ public class AdminController {
     @GetMapping
     public ResponseEntity<List<AdminResponse>> getAllAdmins() {
         List<Admin> admins = adminUseCase.getAllAdmins();
-        if (admins.isEmpty()) {
+        if (admins ==null || admins.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         var adminResponse = MAPPER_RESPONSE.listAdminToListAdminResponse(admins);
@@ -55,6 +54,23 @@ public class AdminController {
     @GetMapping("/{id}")
     public ResponseEntity<AdminResponse> getAdminById(@PathVariable String id) {
         Admin admin = adminUseCase.getAdminById(id);
+        if (admin == null) {
+            return ResponseEntity.noContent().build();
+        }
+        var adminResponse = MAPPER_RESPONSE.adminTOAdminResponse(admin);
+        return ResponseEntity.ok(adminResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAdminById(@PathVariable String id) {
+        adminUseCase.deleteAdminBy(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AdminResponse> updateAdminById(@PathVariable String id, @RequestBody AdminRequest adminRequest) {
+        Admin admin = MAPPER_REQUEST.adminRequestToAdmin(adminRequest);
+        admin = adminUseCase.updateAdminById(id, admin);
         if (admin == null) {
             return ResponseEntity.noContent().build();
         }
