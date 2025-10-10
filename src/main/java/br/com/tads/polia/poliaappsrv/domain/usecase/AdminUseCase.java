@@ -19,5 +19,12 @@ public class AdminUseCase {
         return outputPort.getAllAdmins();
     }
 
+    public Admin getAdminById(String id) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
+        }
+        return outputPort.getAdminById(id);
+    }
+
 
 }

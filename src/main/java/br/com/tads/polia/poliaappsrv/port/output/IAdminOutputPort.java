@@ -8,4 +8,5 @@ public interface IAdminOutputPort {
 
     Admin  createAdmin(Admin admin);
     List<Admin> getAllAdmins();
+    Admin getAdminById(String id);
 }

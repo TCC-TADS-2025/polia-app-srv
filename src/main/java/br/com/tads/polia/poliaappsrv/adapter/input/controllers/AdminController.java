@@ -9,6 +9,7 @@ import br.com.tads.polia.poliaappsrv.domain.dto.auth.TokenSubjectAdminDTO;
 import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
 import br.com.tads.polia.poliaappsrv.domain.usecase.AdminUseCase;
 import br.com.tads.polia.poliaappsrv.domain.usecase.AuthUseCase;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,16 @@ public class AdminController {
             return ResponseEntity.noContent().build();
         }
         var adminResponse = MAPPER_RESPONSE.listAdminToListAdminResponse(admins);
+        return ResponseEntity.ok(adminResponse);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AdminResponse> getAdminById(@PathVariable String id) {
+        Admin admin = adminUseCase.getAdminById(id);
+        if (admin == null) {
+            return ResponseEntity.noContent().build();
+        }
+        var adminResponse = MAPPER_RESPONSE.adminTOAdminResponse(admin);
         return ResponseEntity.ok(adminResponse);
     }
 

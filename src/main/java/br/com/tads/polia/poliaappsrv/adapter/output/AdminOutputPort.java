@@ -44,4 +44,13 @@ public class AdminOutputPort implements IAdminOutputPort {
         }
         return result;
     }
+
+    @Override
+    public Admin getAdminById(String id) {
+        var result = MAPPER.adminEntityToAdmin(adminRepository.findById(id).orElse(null));
+        if(result == null) {
+            return null;
+        }
+        return result;
+    }
 }
