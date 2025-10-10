@@ -29,6 +29,7 @@ public class AdminOutputPort implements IAdminOutputPort {
 
     @Override
     public Admin createAdmin(Admin admin) {
+        admin.setPassword("1234");
         AdminEntity adminEntity = MAPPER.adminToAdminEntity(admin);
         adminEntity.setId(UUID.randomUUID().toString());
         adminEntity.setPassword(passwordEncoder.encode(admin.getPassword()));

@@ -16,5 +16,4 @@ public class AdminRequest implements Serializable {
         private String email;
         private String cpf;
         private String phone;
-        private String password;
 }

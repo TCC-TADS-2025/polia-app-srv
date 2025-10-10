@@ -30,7 +30,7 @@ public class AdminEntity {
     private String name;
     @Column(unique = true)
     private String cpf;
-    @Column(unique = true)
+    @Column(nullable = false)
     private String phone;
     @Column(nullable = false)
     private String password;
