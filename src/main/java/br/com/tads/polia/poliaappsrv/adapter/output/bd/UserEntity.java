@@ -40,14 +40,13 @@ public class UserEntity implements UserDetails{
     private String name;
     @Column(unique = true)
     private String cpf;
-    @Column(unique = true)
-    private String phone;
     @Column(nullable = false)
     private String password;
     private boolean enabled;
     private Role role;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp

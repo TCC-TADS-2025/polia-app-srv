@@ -1,11 +1,14 @@
 package br.com.tads.polia.poliaappsrv.domain.usecase;
 
-import br.com.tads.polia.poliaappsrv.adapter.output.bd.UserEntity;
-import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
-import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
-import br.com.tads.polia.poliaappsrv.domain.enums.Role;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.request.AdminUpdateRequest;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.request.UserRequest;
+import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
+import br.com.tads.polia.poliaappsrv.domain.entity.User;
+import br.com.tads.polia.poliaappsrv.domain.exception.ConfirmPasswordFailsException;
 import br.com.tads.polia.poliaappsrv.infrastructure.mappers.UserMapper;
-import jakarta.persistence.EntityNotFoundException;
+import br.com.tads.polia.poliaappsrv.port.output.IUserOutputPort;
+import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,37 +20,44 @@ public class UserUseCase {
     @Autowired
     private UserMapper userMapper;
 
+    private final IUserOutputPort outputPort;
+
     @Autowired
     private UserRepository userRepository;
 
-    public UserDTO createUser(UserDTO dto) {
-        UserEntity user = new UserEntity();
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setCpf(dto.getCpf());
-        user.setPhone(dto.getPhone());
-        user.setEnabled(true);
-        user.setRole(Role.ADMIN);
-        userRepository.save(user);
-
-        return dto;
+    public UserUseCase(IUserOutputPort outputPort) {
+        this.outputPort = outputPort;
     }
 
-    public List<UserDTO> getAllUsers() {
-        List<UserEntity> users = userRepository.findAll();
-        return userMapper.toDTOList(users);
+    public List<User> getAllUsers() {
+        return outputPort.getAllUsers();
     }
 
-    public UserDTO getUserById(String id) {
-        UserEntity user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
-        return userMapper.toDTO(user);
+    public User getUserById(String id) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
+        }
+        return outputPort.getUserById(id);
     }
 
-    public void deleteUser(String id) {
-        UserEntity user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
-        userRepository.deleteById(id);
+    public void deleteUserById(String id) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
+        }
+        outputPort.deleteUserById(id);
+    }
+
+    public User updateUserById(String id, User user) {
+        if (user == null || Strings.isEmpty(id)) {
+            throw new IllegalArgumentException("User or User ID cannot be null or empty");
+        }
+        return outputPort.updateUserById(id,user);
+    }
+
+    public void checkPassword(UserRequest userRequest) {
+        if(!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
+            throw new ConfirmPasswordFailsException();
+        }
     }
 
 }
