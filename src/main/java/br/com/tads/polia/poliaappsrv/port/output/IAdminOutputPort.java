@@ -9,6 +9,6 @@ public interface IAdminOutputPort {
     Admin  createAdmin(Admin admin);
     List<Admin> getAllAdmins();
     Admin getAdminById(String id);
-    void deleteAdminBy(String id);
+    void deleteAdminById(String id);
     Admin updateAdminById(String id, Admin admin);
 }

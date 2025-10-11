@@ -57,7 +57,7 @@ public class AdminOutputPort implements IAdminOutputPort {
     }
 
     @Override
-    public void deleteAdminBy(String id) {
+    public void deleteAdminById(String id) {
         AdminEntity admin = adminRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Admin not found with ID: " + id));
         adminRepository.deleteById(id);
     }

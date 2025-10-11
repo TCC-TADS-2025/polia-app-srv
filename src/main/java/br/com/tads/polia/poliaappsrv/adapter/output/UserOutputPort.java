@@ -1,15 +1,18 @@
 package br.com.tads.polia.poliaappsrv.adapter.output;
 
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.AdminEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.UserEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.mapper.UserOutputMapper;
 import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import br.com.tads.polia.poliaappsrv.domain.enums.Role;
 import br.com.tads.polia.poliaappsrv.port.output.IUserOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,5 +38,29 @@ public class UserOutputPort implements IUserOutputPort {
         userEntity.setRole(Role.USER);
         userRepository.save(userEntity);
         return MAPPER.userEntityToUser(userEntity);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        var result = MAPPER.listUserEntityToListUser(userRepository.findAll());
+        if(result == null || result.isEmpty()) {
+            return null;
+        }
+        return result;
+    }
+
+    @Override
+    public User getUserById(String id) {
+        var result = MAPPER.userEntityToUser(userRepository.findById(id).orElse(null));
+        if (result == null) {
+            return null;
+        }
+        return result;
+    }
+
+    @Override
+    public void deleteUserById(String id) {
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
+        userRepository.deleteById(id);
     }
 }

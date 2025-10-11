@@ -29,11 +29,11 @@ public class AdminUseCase {
         return outputPort.getAdminById(id);
     }
 
-    public void deleteAdminBy(String id) {
+    public void deleteAdminById(String id) {
         if (id == null || id.isEmpty()) {
             throw new IllegalArgumentException("ID cannot be null or empty");
         }
-        outputPort.deleteAdminBy(id);
+        outputPort.deleteAdminById(id);
     }
 
     public  Admin updateAdminById(String id, Admin admin) {
