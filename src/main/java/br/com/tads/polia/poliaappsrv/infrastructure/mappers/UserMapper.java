@@ -7,6 +7,7 @@ import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
 
 import java.util.List;
 
+import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -19,6 +20,8 @@ public interface UserMapper {
                         + ".map(org.springframework.security.core.GrantedAuthority::getAuthority)"
                         + ".collect(java.util.stream.Collectors.toList()))")
     UserDTO toDTO(UserEntity user);
+
+    User userEntityToUser(UserEntity user);
     
     UserEntity toEntity(UserDTO userDTO);
     

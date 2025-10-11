@@ -1,18 +1,17 @@
 package br.com.tads.polia.poliaappsrv.domain.usecase;
 
-import br.com.tads.polia.poliaappsrv.adapter.input.api.request.UserRequest;
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.UserEntity;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.LoginDTO;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.TokenSubjectAdminDTO;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.TokenSubjectDTO;
-import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
 import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
-import br.com.tads.polia.poliaappsrv.domain.enums.Role;
+import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import br.com.tads.polia.poliaappsrv.domain.exception.CpfAlredyExistsException;
 import br.com.tads.polia.poliaappsrv.domain.exception.EmailAlredyExistsException;
 import br.com.tads.polia.poliaappsrv.infrastructure.mappers.UserMapper;
 import br.com.tads.polia.poliaappsrv.infrastructure.security.JwtTokenProvider;
 import br.com.tads.polia.poliaappsrv.port.output.IAdminOutputPort;
+import br.com.tads.polia.poliaappsrv.port.output.IUserOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.AdminRepository;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +39,7 @@ public class AuthUseCase {
     private final JwtTokenProvider jwtTokenProvider;
 
     private final IAdminOutputPort adminOutputPort;
+    private final IUserOutputPort userOutputPort;
 
     private final UserMapper userMapper;
 
@@ -49,15 +48,15 @@ public class AuthUseCase {
             new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserEntity user = userRepository.findByEmail(loginDTO.getEmail())
+        UserEntity userEntity = userRepository.findByEmail(loginDTO.getEmail())
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o email: " + loginDTO.getEmail()));
         
-        UserDTO userDTO = userMapper.toDTO(user);
-        String jwt = jwtTokenProvider.generateToken(userDTO);
+        User user = userMapper.userEntityToUser(userEntity);
+        String jwt = jwtTokenProvider.generateToken(user);
 
         return TokenSubjectDTO.builder()
             .accessToken(jwt)
-            .user(userDTO)
+            .user(user)
             .build();
     }
 
@@ -79,24 +78,21 @@ public class AuthUseCase {
             .build();
     }
 
-    public TokenSubjectDTO registerUser(UserRequest userRequest) {
-        if (userRepository.existsByEmail(userRequest.getEmail())) {
+    public TokenSubjectDTO registerUser(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new EmailAlredyExistsException();
         }
+        if (userRepository.existsByCpf(user.getCpf())) {
+            throw new CpfAlredyExistsException();
+        }
 
-        UserEntity user = userMapper.fromRegisterUserRequest(userRequest);
-        user.setId(UUID.randomUUID().toString());
-        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        user.setEnabled(true);
-        user.setRole(Role.USER);
+        user = userOutputPort.createUser(user);
 
-        user = userRepository.save(user);
-
-        String jwt = jwtTokenProvider.generateToken(userMapper.toDTO(user));
+        String jwt = jwtTokenProvider.generateToken(user);
 
         return TokenSubjectDTO.builder()
                 .accessToken(jwt)
-                .user(userMapper.toDTO(user))
+                .user(user)
                 .build();
     }
 

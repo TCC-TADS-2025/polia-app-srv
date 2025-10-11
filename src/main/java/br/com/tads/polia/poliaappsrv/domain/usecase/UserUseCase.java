@@ -25,7 +25,6 @@ public class UserUseCase {
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setCpf(dto.getCpf());
-        user.setPhone(dto.getPhone());
         user.setEnabled(true);
         user.setRole(Role.ADMIN);
         userRepository.save(user);

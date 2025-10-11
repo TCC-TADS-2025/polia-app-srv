@@ -1,6 +1,7 @@
 package br.com.tads.polia.poliaappsrv.infrastructure.security;
 
 import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
+import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -28,7 +29,7 @@ public class JwtTokenProvider {
     private long expirationTime;
 
 
-    public String generateToken(UserDTO user) {
+    public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         claims.put("user", user);

@@ -1,19 +1,15 @@
 package br.com.tads.polia.poliaappsrv.domain.dto.user;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
+import br.com.tads.polia.poliaappsrv.domain.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import br.com.tads.polia.poliaappsrv.domain.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
