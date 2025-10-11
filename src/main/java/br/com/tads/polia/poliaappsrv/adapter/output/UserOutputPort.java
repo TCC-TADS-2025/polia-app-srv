@@ -1,6 +1,5 @@
 package br.com.tads.polia.poliaappsrv.adapter.output;
 
-import br.com.tads.polia.poliaappsrv.adapter.output.bd.AdminEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.UserEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.mapper.UserOutputMapper;
 import br.com.tads.polia.poliaappsrv.domain.entity.User;
@@ -62,5 +61,22 @@ public class UserOutputPort implements IUserOutputPort {
     public void deleteUserById(String id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User updateUserById(String id, User user) {
+        var result = MAPPER.userEntityToUser(userRepository.findById(id).orElse(null));
+        if (result == null) {
+            return null;
+        }
+        result.setName(user.getName());
+        result.setEmail(user.getEmail());
+        result.setPassword(passwordEncoder.encode(user.getPassword()));
+        UserEntity userEntity = MAPPER.userToUserEntity(result);
+        userEntity.setEnabled(true);
+        userEntity.setRole(Role.USER);
+        userRepository.save(userEntity);
+        User userUpdated = MAPPER.userEntityToUser(userEntity);
+        return userUpdated;
     }
 }

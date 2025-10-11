@@ -46,6 +46,7 @@ public class UserEntity implements UserDetails{
     private Role role;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp

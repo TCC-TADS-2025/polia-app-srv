@@ -20,10 +20,6 @@ public interface UserMapperRequest {
 
     User userRequestToUser(UserRequest request);
 
-    UserDTO UserRequestToUserDTO(AdminRequest request);
-
-    UserDTO userToUserDTO(UserEntity user);
-
     default List<String> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
         if (authorities == null) return null;
         return authorities.stream()

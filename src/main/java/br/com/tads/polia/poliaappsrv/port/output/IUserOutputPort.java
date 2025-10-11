@@ -9,4 +9,5 @@ public interface IUserOutputPort {
     List<User> getAllUsers();
     User getUserById(String id);
     void deleteUserById(String id);
+    User updateUserById(String id, User user);
 }

@@ -64,31 +64,18 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PostMapping
-//    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody AdminRequest userRequest) {
-//        UserDTO userDTO = userUseCase.createUser(UserMapperRequest.INSTANCE.UserRequestToUserDTO(userRequest));
-//        UserResponse userResponse = UserMapperResponse.INSTANCE.userDTOToUserResponse(userDTO);
-//        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
-//    }
-//
-//    @GetMapping
-//    public ResponseEntity<List<UserDTO>> getAllUsers() {
-//        List<UserDTO> userDTOs = userUseCase.getAllUsers();
-//        return ResponseEntity.ok(userDTOs);
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
-//        UserDTO userDTO = userUseCase.getUserById(id);
-//        return ResponseEntity.ok(userDTO);
-//    }
-//
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
-//        userUseCase.deleteUser(id);
-//        return ResponseEntity.noContent().build();
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUserById(@PathVariable String id, @RequestBody UserRequest userRequest) {
+        userUseCase.checkPassword(userRequest);
+        User user = MAPPER_REQUEST.userRequestToUser(userRequest);
+        user = userUseCase.updateUserById(id, user);
+        if (user == null) {
+            return ResponseEntity.noContent().build();
+        }
+        var userResponse = MAPPER_RESPONSE.userToUserResponse(user);
+        return ResponseEntity.ok(userResponse);
+    }
+
 
 
 }
