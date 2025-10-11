@@ -2,7 +2,9 @@ package br.com.tads.polia.poliaappsrv.adapter.input.controllers;
 
 
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.AdminRequest;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.request.AdminUpdateRequest;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.mapper.AdminMapperRequest;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.request.mapper.AdminUpdateMapperRequest;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.AdminResponse;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.AdminMapperResponse;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.TokenSubjectAdminDTO;
@@ -21,6 +23,9 @@ public class AdminController {
 
     @Autowired
     private AdminMapperRequest MAPPER_REQUEST;
+
+    @Autowired
+    private AdminUpdateMapperRequest MAPPER_UPDATE_REQUEST;
 
     @Autowired
     private AdminMapperResponse MAPPER_RESPONSE;
@@ -68,8 +73,9 @@ public class AdminController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AdminResponse> updateAdminById(@PathVariable String id, @RequestBody AdminRequest adminRequest) {
-        Admin admin = MAPPER_REQUEST.adminRequestToAdmin(adminRequest);
+    public ResponseEntity<AdminResponse> updateAdminById(@PathVariable String id, @RequestBody AdminUpdateRequest adminUpdateRequest) {
+        adminUseCase.checkPassword(adminUpdateRequest);
+        Admin admin = MAPPER_UPDATE_REQUEST.adminUpdateRequestToAdmin(adminUpdateRequest);
         admin = adminUseCase.updateAdminById(id, admin);
         if (admin == null) {
             return ResponseEntity.noContent().build();

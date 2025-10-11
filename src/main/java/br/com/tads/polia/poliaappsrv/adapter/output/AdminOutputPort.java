@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -71,8 +72,12 @@ public class AdminOutputPort implements IAdminOutputPort {
         result.setName(admin.getName());
         result.setEmail(admin.getEmail());
         result.setPhone(admin.getPhone());
-        adminRepository.save(MAPPER.adminToAdminEntity(result));
-        return result;
+        result.setPassword(passwordEncoder.encode(admin.getPassword()));
+        AdminEntity adminEntity = MAPPER.adminToAdminEntity(result);
+        adminEntity.setEnabled(true);
+        adminRepository.save(adminEntity);
+        Admin adminUpdated = MAPPER.adminEntityToAdmin(adminEntity);
+        return adminUpdated;
     }
 
 

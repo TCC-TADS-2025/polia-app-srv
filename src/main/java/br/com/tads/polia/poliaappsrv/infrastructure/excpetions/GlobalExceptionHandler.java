@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.tads.polia.poliaappsrv.domain.exception.ConfirmPasswordFailsException;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -173,4 +174,22 @@ public class GlobalExceptionHandler {
                 );
                 return new ResponseEntity<>(error, HttpStatus.CONFLICT);
         }
+
+        @ExceptionHandler(ConfirmPasswordFailsException.class)
+        @ResponseStatus(HttpStatus.CONFLICT)
+        public ResponseEntity<ExceptionResponse> handleConfirmPasswordFailsException(ConfirmPasswordFailsException ex , HttpServletRequest request) {
+
+            ExceptionResponse error = new ExceptionResponse(
+                    request.getRequestURI(),
+                    ex.getMessage(),
+                    HttpStatus.NOT_FOUND.value(),
+                    LocalDateTime.now(),
+                    List.of(new ExceptionResponse.FieldError(
+                            "confirmPassword",
+                            "As senhas não conferem"
+                    ))
+            );
+            return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+        }
+
 }

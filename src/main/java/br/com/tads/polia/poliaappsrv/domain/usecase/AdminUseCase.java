@@ -1,6 +1,8 @@
 package br.com.tads.polia.poliaappsrv.domain.usecase;
 
+import br.com.tads.polia.poliaappsrv.adapter.input.api.request.AdminUpdateRequest;
 import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
+import br.com.tads.polia.poliaappsrv.domain.exception.ConfirmPasswordFailsException;
 import br.com.tads.polia.poliaappsrv.port.output.IAdminOutputPort;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,12 @@ public class AdminUseCase {
             throw new IllegalArgumentException("Admin or Admin ID cannot be null or empty");
         }
         return outputPort.updateAdminById(id,admin);
+    }
+
+    public void checkPassword(AdminUpdateRequest adminUpdateRequest) {
+        if(!adminUpdateRequest.getPassword().equals(adminUpdateRequest.getConfirmPassword())) {
+            throw new ConfirmPasswordFailsException();
+        }
     }
 
 

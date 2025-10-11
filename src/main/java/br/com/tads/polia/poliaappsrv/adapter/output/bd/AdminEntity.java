@@ -37,6 +37,7 @@ public class AdminEntity {
     private boolean enabled;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
