@@ -1,10 +1,8 @@
 package br.com.tads.polia.poliaappsrv.domain.entity;
 
-import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.mapstruct.Mapper;
 
 import java.util.UUID;
 

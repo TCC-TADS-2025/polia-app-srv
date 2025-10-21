@@ -8,7 +8,11 @@ import br.com.tads.polia.poliaappsrv.port.output.bd.repository.AnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AnswerOutputPort implements IAnswerOutputPort {
@@ -23,8 +27,27 @@ public class AnswerOutputPort implements IAnswerOutputPort {
 
     @Override
     public List<Answer> createAnswers(List<Answer> answers) {
-        List<AnswerEntity> result = MAPPER.listAnswerToAnswerEntity(answers);
-        List<AnswerEntity> createdAnswers = answerRepository.saveAll(result);
-        return MAPPER.listAnswerEntityToAnswer(createdAnswers);
+        List<AnswerEntity> savedAnswers = new ArrayList<>();
+
+        for (Answer answer : answers) {
+            String userId = answer.getUserId();
+            UUID questionId = answer.getQuestionId();
+
+            Optional<AnswerEntity> existing = answerRepository
+                    .findByUserId_IdAndQuestionAnswer_Question_Id(userId, questionId);
+
+            AnswerEntity entity = MAPPER.answerToAnswerEntity(answer);
+
+            if (existing.isPresent()) {
+                AnswerEntity existingEntity = existing.get();
+                existingEntity.setAnswerWeight(entity.getAnswerWeight());
+                existingEntity.setUpdatedAt(LocalDateTime.now());
+                savedAnswers.add(answerRepository.save(existingEntity));
+            } else {
+                savedAnswers.add(answerRepository.save(entity));
+            }
+        }
+
+        return MAPPER.listAnswerEntityToAnswer(savedAnswers);
     }
 }
