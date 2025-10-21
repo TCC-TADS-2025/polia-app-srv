@@ -1,12 +1,15 @@
 package br.com.tads.polia.poliaappsrv.domain.usecase;
 
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.CandidateEntity;
+import br.com.tads.polia.poliaappsrv.domain.entity.Candidate;
+import br.com.tads.polia.poliaappsrv.port.output.ICandidateOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.CandidateRepository;
 import br.com.tads.polia.poliaappsrv.domain.dto.candidate.CandidateDTO;
 import br.com.tads.polia.poliaappsrv.infrastructure.mappers.CandidateMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,12 @@ public class CandidateUseCase {
 
     @Autowired
     private CandidateRepository candidateRepository;
+
+    private final ICandidateOutputPort outputPort;
+
+    public CandidateUseCase(ICandidateOutputPort outputPort) {
+        this.outputPort = outputPort;
+    }
 
     @Transactional
     public CandidateDTO createCandidate(CandidateDTO dto) {
@@ -46,49 +55,53 @@ public class CandidateUseCase {
         return dto;
     }
 
-    public List<CandidateDTO> getAllCandidates() {
-        List<br.com.tads.polia.poliaappsrv.adapter.output.bd.CandidateEntity> candidates = candidateRepository.findAll();
-        return candidateMapper.toDTOList(candidates);
+    public List<Candidate> getAllCandidates() {
+        return outputPort.getAllCandidates();
     }
 
-    public CandidateDTO getCandidateById(UUID id) {
-        CandidateEntity candidate = candidateRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Candidate not found with ID: " + id));
-        return candidateMapper.toDTO(candidate);
-    }
-
-    public CandidateDTO updateCandidate(UUID id, CandidateDTO candidateDTO) {
-        if (!candidateRepository.existsById(id)) {
-            throw new EntityNotFoundException("Candidate not found with ID: " + id);
+    public Candidate getCandidateById(UUID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
         }
-        CandidateEntity candidateToUpdate = new CandidateEntity();
-        candidateToUpdate.setId(id);
-        candidateToUpdate.setName(candidateDTO.getName());
-        candidateToUpdate.setBirthday(candidateDTO.getBirthday());
-        candidateToUpdate.setNationality(candidateDTO.getNationality());
-        candidateToUpdate.setGender(candidateDTO.getGender());
-        candidateToUpdate.setRace(candidateDTO.getRace());
-        candidateToUpdate.setCivilStatus(candidateDTO.getCivilStatus());
-        candidateToUpdate.setLevelOfEducation(candidateDTO.getLevelOfEducation());
-        candidateToUpdate.setOccupation(candidateDTO.getOccupation());
-        candidateToUpdate.setReelection(candidateDTO.getReelection());
-        candidateToUpdate.setCoalition(candidateDTO.getCoalition());
-        candidateToUpdate.setPosition(candidateDTO.getPosition());
-        candidateToUpdate.setParty(candidateDTO.getParty());
-        candidateToUpdate.setState(candidateDTO.getState());
-        candidateToUpdate.setCity(candidateDTO.getCity());
-        candidateToUpdate.setCandidacyNumber(candidateDTO.getCandidacyNumber());
-        candidateToUpdate.setCandidateAsset(candidateDTO.getCandidateAsset());
-        candidateToUpdate.setProposals(candidateDTO.getProposals());
-        CandidateEntity updatedCandidate = candidateRepository.save(candidateToUpdate);
-
-        return candidateMapper.toDTO(updatedCandidate);
+        return outputPort.getCandidateById(id);
     }
 
-    public void deleteCandidate(UUID id) {
-        if (!candidateRepository.existsById(id)) {
-            throw new EntityNotFoundException("Candidate not found with ID: " + id);
+    public Candidate updateAdminById(UUID id, Candidate candidate) {
+        if (candidate == null) {
+            throw new IllegalArgumentException("Candidate or Candidate ID cannot be null or empty");
         }
-        candidateRepository.deleteById(id);
+        return outputPort.updateCandidateById(id,candidate);
+//        if (!candidateRepository.existsById(id)) {
+//            throw new EntityNotFoundException("Candidate not found with ID: " + id);
+//        }
+//        CandidateEntity candidateToUpdate = new CandidateEntity();
+//        candidateToUpdate.setId(id);
+//        candidateToUpdate.setName(candidateDTO.getName());
+//        candidateToUpdate.setBirthday(candidateDTO.getBirthday());
+//        candidateToUpdate.setNationality(candidateDTO.getNationality());
+//        candidateToUpdate.setGender(candidateDTO.getGender());
+//        candidateToUpdate.setRace(candidateDTO.getRace());
+//        candidateToUpdate.setCivilStatus(candidateDTO.getCivilStatus());
+//        candidateToUpdate.setLevelOfEducation(candidateDTO.getLevelOfEducation());
+//        candidateToUpdate.setOccupation(candidateDTO.getOccupation());
+//        candidateToUpdate.setReelection(candidateDTO.getReelection());
+//        candidateToUpdate.setCoalition(candidateDTO.getCoalition());
+//        candidateToUpdate.setPosition(candidateDTO.getPosition());
+//        candidateToUpdate.setParty(candidateDTO.getParty());
+//        candidateToUpdate.setState(candidateDTO.getState());
+//        candidateToUpdate.setCity(candidateDTO.getCity());
+//        candidateToUpdate.setCandidacyNumber(candidateDTO.getCandidacyNumber());
+//        candidateToUpdate.setCandidateAsset(candidateDTO.getCandidateAsset());
+//        candidateToUpdate.setProposals(candidateDTO.getProposals());
+//        CandidateEntity updatedCandidate = candidateRepository.save(candidateToUpdate);
+//
+//        return candidateMapper.toDTO(updatedCandidate);
+    }
+
+    public void deleteCandidateById(UUID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
+        }
+        outputPort.deleteAdminById(id);
     }
 }
