@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public interface ICandidateOutputPort {
 
+    Candidate createCandidate(Candidate candidate);
     List<Candidate> getAllCandidates();
     Candidate getCandidateById(UUID id);
     void deleteAdminById(UUID id);

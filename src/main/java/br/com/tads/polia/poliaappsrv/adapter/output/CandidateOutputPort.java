@@ -25,6 +25,31 @@ public class CandidateOutputPort implements ICandidateOutputPort {
     }
 
     @Override
+    public Candidate createCandidate(Candidate candidate) {
+        CandidateEntity candidateEntity = new CandidateEntity();
+        candidateEntity.setName(candidate.getName());
+        candidateEntity.setBirthday(candidate.getBirthday());
+        candidateEntity.setNationality(candidate.getNationality());
+        candidateEntity.setGender(candidate.getGender());
+        candidateEntity.setRace(candidate.getRace());
+        candidateEntity.setCivilStatus(candidate.getCivilStatus());
+        candidateEntity.setLevelOfEducation(candidate.getLevelOfEducation());
+        candidateEntity.setOccupation(candidate.getOccupation());
+        candidateEntity.setReelection(candidate.getReelection());
+        candidateEntity.setCoalition(candidate.getCoalition());
+        candidateEntity.setPosition(candidate.getPosition());
+        candidateEntity.setParty(candidate.getParty());
+        candidateEntity.setState(candidate.getState());
+        candidateEntity.setCity(candidate.getCity());
+        candidateEntity.setCandidacyNumber(candidate.getCandidacyNumber());
+        candidateEntity.setCandidateAsset(candidate.getCandidateAsset());
+        candidateEntity.setProposals(candidate.getProposals());
+        candidateRepository.save(candidateEntity);
+        Candidate candidateCreated = MAPPER.candidateEntityToCandidate(candidateEntity);
+        return candidateCreated;
+    }
+
+    @Override
     public List<Candidate> getAllCandidates() {
         var result = MAPPER.listCandidateEntityToListCandidate(candidateRepository.findAll());
         if(result == null || result.isEmpty()) {

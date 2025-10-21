@@ -4,7 +4,6 @@ import br.com.tads.polia.poliaappsrv.adapter.input.api.request.CandidateRequest;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.mapper.CandidateMapperRequest;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.CandidateResponse;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.CandidateMapperResponse;
-import br.com.tads.polia.poliaappsrv.domain.dto.candidate.CandidateDTO;
 import br.com.tads.polia.poliaappsrv.domain.entity.Candidate;
 import br.com.tads.polia.poliaappsrv.domain.usecase.CandidateUseCase;
 import jakarta.validation.Valid;
@@ -36,8 +35,9 @@ public class CandidateController {
 
     @PostMapping
     public ResponseEntity<CandidateResponse> createCandidate(@Valid @RequestBody CandidateRequest candidateRequest) {
-        CandidateDTO candidateDTO = candidateUseCase.createCandidate(CandidateMapperRequest.INSTANCE.CandidateResquestToCandidateDTO(candidateRequest));
-        CandidateResponse candidateResponse = br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.CandidateMapper.INSTANCE.CandidateDTOToCandidateResponse(candidateDTO);
+        Candidate candidate = MAPPER_REQUEST.candidateRequestToCandidate(candidateRequest);
+        candidate = candidateUseCase.createCandidate(candidate);
+        var candidateResponse = MAPPER_RESPONSE.candidateTOCandidateResponse(candidate);
         return new ResponseEntity<>(candidateResponse, HttpStatus.CREATED);
     }
 
