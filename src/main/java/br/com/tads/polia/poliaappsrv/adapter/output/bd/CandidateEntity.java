@@ -90,6 +90,7 @@ public class CandidateEntity {
     private String proposals;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime dataInclusao;
 
     @UpdateTimestamp
