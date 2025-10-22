@@ -34,7 +34,7 @@ public class AnswerOutputPort implements IAnswerOutputPort {
             UUID questionId = answer.getQuestionId();
 
             Optional<AnswerEntity> existing = answerRepository
-                    .findByUserId_IdAndQuestionAnswer_Question_Id(userId, questionId);
+                    .findByUserId_IdAndQuestionAnswer_IdQuestionWeight(userId, questionId);
 
             AnswerEntity entity = MAPPER.answerToAnswerEntity(answer);
 

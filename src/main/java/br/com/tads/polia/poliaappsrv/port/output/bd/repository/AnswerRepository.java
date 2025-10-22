@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public interface AnswerRepository extends JpaRepository<AnswerEntity, UUID> {
     List<AnswerEntity> findByUserId_Id(String userId);
-    Optional<AnswerEntity> findByUserId_IdAndQuestionAnswer_Question_Id(String userId, UUID questionId);
+    Optional<AnswerEntity> findByUserId_IdAndQuestionAnswer_IdQuestionWeight(String userId, UUID questionAnswerId);
 
 }
