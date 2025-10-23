@@ -14,5 +14,7 @@ public class User {
     private String email;
     private String cpf;
     private String password;
+    private Integer coordenateX;
+    private Integer coordenateY;
 
 }

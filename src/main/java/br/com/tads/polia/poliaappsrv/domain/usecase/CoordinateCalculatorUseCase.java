@@ -2,7 +2,9 @@ package br.com.tads.polia.poliaappsrv.domain.usecase;
 
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.AnswerEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.QuestionAnswerEntity;
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.UserEntity;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.AnswerRepository;
+import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +13,11 @@ import java.util.List;
 public class CoordinateCalculatorUseCase {
 
     private final AnswerRepository answerRepository;
+    private final UserRepository userRepository;
 
-    public CoordinateCalculatorUseCase(AnswerRepository answerRepository) {
+    public CoordinateCalculatorUseCase(AnswerRepository answerRepository, UserRepository userRepository) {
         this.answerRepository = answerRepository;
+        this.userRepository = userRepository;
     }
 
     public Coordinate calculateCoordinateForUser(String userId) {
@@ -29,6 +33,11 @@ public class CoordinateCalculatorUseCase {
             totalX += weight * (qa.getWeightX() != null ? qa.getWeightX() : 0);
             totalY += weight * (qa.getWeightY() != null ? qa.getWeightY() : 0);
         }
+
+        UserEntity userEntity = userRepository.findById(userId).orElseThrow();
+        userEntity.setCoordinateX(totalX);
+        userEntity.setCoordinateY(totalY);
+        userRepository.save(userEntity);
 
         return new Coordinate(totalX, totalY);
     }

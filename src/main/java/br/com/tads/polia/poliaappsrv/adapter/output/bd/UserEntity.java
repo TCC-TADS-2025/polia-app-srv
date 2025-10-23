@@ -45,6 +45,9 @@ public class UserEntity implements UserDetails{
     private boolean enabled;
     private Role role;
 
+    private Integer coordinateX;
+    private Integer coordinateY;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
