@@ -50,4 +50,13 @@ public class AnswerOutputPort implements IAnswerOutputPort {
 
         return MAPPER.listAnswerEntityToAnswer(savedAnswers);
     }
+
+    @Override
+    public List<Answer> getAnswerById(String id) {
+        List<AnswerEntity> entidades = answerRepository.findByUserId(id);
+        if (entidades == null || entidades.isEmpty()) {
+            return null;
+        }
+        return MAPPER.listAnswerEntityToAnswer(entidades);
+    }
 }

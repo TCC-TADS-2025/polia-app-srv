@@ -4,6 +4,7 @@ import br.com.tads.polia.poliaappsrv.adapter.input.api.request.AnswerRequest;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.mapper.AnswerMapperRequest;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.AnswerResponse;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.AnswerMapperResponse;
+import br.com.tads.polia.poliaappsrv.domain.entity.Answer;
 import br.com.tads.polia.poliaappsrv.domain.usecase.AnswerUseCase;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,18 @@ public class AnswerController {
         if(result == null || result.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        var teste = MAPPER_RESPONSE.listAnswersToAnswerResponses(result);
-        return ResponseEntity.ok(teste);
+        var response = MAPPER_RESPONSE.listAnswersToAnswerResponses(result);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping({"/{id}"})
+    public ResponseEntity<List<AnswerResponse>> getAnswerById(@PathVariable String id) {
+        List<Answer> result = answerUseCase.getAnswerById(id);
+        if(result == null || result.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        var response = MAPPER_RESPONSE.listAnswersToAnswerResponses(result);
+        return ResponseEntity.ok(response);
     }
 
 }
