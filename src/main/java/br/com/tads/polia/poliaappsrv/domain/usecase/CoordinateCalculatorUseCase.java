@@ -15,6 +15,12 @@ public class CoordinateCalculatorUseCase {
     private final AnswerRepository answerRepository;
     private final UserRepository userRepository;
 
+    // Limites fixos para normalização
+    private static final int MIN_X = -36;
+    private static final int MAX_X = 36;
+    private static final int MIN_Y = -38;
+    private static final int MAX_Y = 38;
+
     public CoordinateCalculatorUseCase(AnswerRepository answerRepository, UserRepository userRepository) {
         this.answerRepository = answerRepository;
         this.userRepository = userRepository;
@@ -30,18 +36,25 @@ public class CoordinateCalculatorUseCase {
             QuestionAnswerEntity qa = answer.getQuestionAnswer();
             int weight = answer.getAnswerWeight();
 
-            totalX += weight * (qa.getWeightX() != null ? qa.getWeightX() : 0);
-            totalY += weight * (qa.getWeightY() != null ? qa.getWeightY() : 0);
+            int x = weight * (qa.getWeightX() != null ? qa.getWeightX() : 0);
+            int y = weight * (qa.getWeightY() != null ? qa.getWeightY() : 0);
+
+            totalX += x;
+            totalY += y;
         }
 
+        // Normalização para intervalo [-10, 10]
+        double normalizedX = ((double)(totalX - MIN_X) / (MAX_X - MIN_X)) * 20 - 10;
+        double normalizedY = ((double)(totalY - MIN_Y) / (MAX_Y - MIN_Y)) * 20 - 10;
+
+        // Atualiza o usuário com coordenadas normalizadas
         UserEntity userEntity = userRepository.findById(userId).orElseThrow();
-        userEntity.setCoordinateX(totalX);
-        userEntity.setCoordinateY(totalY);
+        userEntity.setCoordinateX((int) normalizedX);
+        userEntity.setCoordinateY((int) normalizedY);
         userRepository.save(userEntity);
 
-        return new Coordinate(totalX, totalY);
+        return new Coordinate((int) normalizedX, (int) normalizedY);
     }
 
     public record Coordinate(int x, int y) {}
-
 }
