@@ -74,7 +74,9 @@ public class AdminController {
 
     @PutMapping("/{id}")
     public ResponseEntity<AdminResponse> updateAdminById(@PathVariable String id, @RequestBody AdminUpdateRequest adminUpdateRequest) {
-        adminUseCase.checkPassword(adminUpdateRequest);
+        if(adminUpdateRequest.getPassword() != null && adminUpdateRequest.getConfirmPassword() != null) {
+            adminUseCase.checkPassword(adminUpdateRequest);
+        }
         Admin admin = MAPPER_UPDATE_REQUEST.adminUpdateRequestToAdmin(adminUpdateRequest);
         admin = adminUseCase.updateAdminById(id, admin);
         if (admin == null) {

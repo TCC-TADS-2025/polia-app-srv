@@ -71,7 +71,9 @@ public class AdminOutputPort implements IAdminOutputPort {
         result.setName(admin.getName());
         result.setEmail(admin.getEmail());
         result.setPhone(admin.getPhone());
-        result.setPassword(passwordEncoder.encode(admin.getPassword()));
+        if(admin.getPassword() != null && !admin.getPassword().isEmpty()) {
+            result.setPassword(passwordEncoder.encode(admin.getPassword()));
+        }
         AdminEntity adminEntity = MAPPER.adminToAdminEntity(result);
         adminEntity.setEnabled(true);
         adminRepository.save(adminEntity);
