@@ -1,8 +1,6 @@
 package br.com.tads.polia.poliaappsrv.domain.usecase;
 
-import br.com.tads.polia.poliaappsrv.adapter.input.api.request.AdminUpdateRequest;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.UserRequest;
-import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
 import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import br.com.tads.polia.poliaappsrv.domain.exception.ConfirmPasswordFailsException;
 import br.com.tads.polia.poliaappsrv.infrastructure.mappers.UserMapper;
@@ -17,13 +15,9 @@ import java.util.List;
 @Service
 public class UserUseCase {
 
-    @Autowired
-    private UserMapper userMapper;
 
     private final IUserOutputPort outputPort;
 
-    @Autowired
-    private UserRepository userRepository;
 
     public UserUseCase(IUserOutputPort outputPort) {
         this.outputPort = outputPort;

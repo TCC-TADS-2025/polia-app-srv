@@ -1,5 +1,9 @@
 package br.com.tads.polia.poliaappsrv.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.tads.polia.poliaappsrv.domain.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +20,6 @@ public class User {
     private String password;
     private Integer coordenateX;
     private Integer coordenateY;
-
+    private Role role = Role.USER;
+    private List<String> authorities = new ArrayList<>();
 }

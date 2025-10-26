@@ -5,6 +5,8 @@ import br.com.tads.polia.poliaappsrv.adapter.output.mapper.AnswerOutputMapper;
 import br.com.tads.polia.poliaappsrv.domain.entity.Answer;
 import br.com.tads.polia.poliaappsrv.port.output.IAnswerOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.AnswerRepository;
+import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
+import br.com.tads.polia.poliaappsrv.port.output.bd.repository.QuestionAnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,15 @@ public class AnswerOutputPort implements IAnswerOutputPort {
     private AnswerOutputMapper MAPPER;
 
     private final AnswerRepository answerRepository;
+    private final UserRepository userRepository;
+    private final QuestionAnswerRepository questionAnswerRepository;
 
-    public AnswerOutputPort(AnswerRepository answerRepository) {
+    public AnswerOutputPort(AnswerRepository answerRepository,
+                            UserRepository userRepository,
+                            QuestionAnswerRepository questionAnswerRepository) {
         this.answerRepository = answerRepository;
+        this.userRepository = userRepository;
+        this.questionAnswerRepository = questionAnswerRepository;
     }
 
     @Override
@@ -44,6 +52,16 @@ public class AnswerOutputPort implements IAnswerOutputPort {
                 existingEntity.setUpdatedAt(LocalDateTime.now());
                 savedAnswers.add(answerRepository.save(existingEntity));
             } else {
+                if (userId != null) {
+                    var userRef = userRepository.getReferenceById(userId);
+                    entity.setUserId(userRef);
+                }
+
+                if (questionId != null) {
+                    var qaRef = questionAnswerRepository.getReferenceById(questionId);
+                    entity.setQuestionAnswer(qaRef);
+                }
+
                 savedAnswers.add(answerRepository.save(entity));
             }
         }
