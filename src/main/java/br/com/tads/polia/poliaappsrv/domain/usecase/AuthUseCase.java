@@ -42,8 +42,9 @@ public class AuthUseCase {
     private final IUserOutputPort userOutputPort;
 
     private final AdminMapper adminMapper;
+    private final UserMapper userMapper;
 
-    public TokenSubjectAdminDTO login(LoginDTO loginDTO) {
+    public TokenSubjectAdminDTO loginAdmin(LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())
         );
@@ -58,6 +59,23 @@ public class AuthUseCase {
             .accessToken(jwt)
             .admin(admin)
             .build();
+    }
+
+    public TokenSubjectDTO loginUser(LoginDTO loginDTO) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserEntity userEntity = userRepository.findByEmail(loginDTO.getEmail())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o email: " + loginDTO.getEmail()));
+
+        User user = userMapper.userEntityToUser(userEntity);
+        String jwt = jwtTokenProvider.generateToken(user);
+
+        return TokenSubjectDTO.builder()
+                .accessToken(jwt)
+                .user(user)
+                .build();
     }
 
     public TokenSubjectAdminDTO register(Admin admin) {

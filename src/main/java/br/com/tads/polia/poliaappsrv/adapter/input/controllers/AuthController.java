@@ -21,8 +21,14 @@ public class AuthController {
     private AuthUseCase authUseCase;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenSubjectAdminDTO> login(@RequestBody LoginDTO loginDTO) {
-        TokenSubjectAdminDTO response = authUseCase.login(loginDTO);
+    public ResponseEntity<TokenSubjectAdminDTO> loginAdmin(@RequestBody LoginDTO loginDTO) {
+        TokenSubjectAdminDTO response = authUseCase.loginAdmin(loginDTO);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login/user")
+    public ResponseEntity<TokenSubjectDTO> loginUser(@RequestBody LoginDTO loginDTO) {
+        TokenSubjectDTO response = authUseCase.loginUser(loginDTO);
         return ResponseEntity.ok(response);
     }
 
