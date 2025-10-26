@@ -21,5 +21,5 @@ public class User {
     private Integer coordenateX;
     private Integer coordenateY;
     private Role role = Role.USER;
-    private List<String> authorities = new ArrayList<>();
+    private List<String> scopes = new ArrayList<>();
 }

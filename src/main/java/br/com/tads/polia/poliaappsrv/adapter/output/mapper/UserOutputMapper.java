@@ -15,7 +15,7 @@ public interface UserOutputMapper {
 
     UserEntity userToUserEntity(User user);
 
-    @Mapping(target = "authorities",
+    @Mapping(target = "scopes",
              expression = "java(entity.getAuthorities()"
                         + ".stream()"
                         + ".map(org.springframework.security.core.GrantedAuthority::getAuthority)"

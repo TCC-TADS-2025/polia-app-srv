@@ -26,5 +26,5 @@ public class UserDTO {
     private String password;
     private Role role;
     @Builder.Default
-    private List<String> authorities = new ArrayList<>();
+    private List<String> scopes = new ArrayList<>();
 }

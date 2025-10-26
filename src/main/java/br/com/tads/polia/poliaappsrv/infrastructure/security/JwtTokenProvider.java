@@ -43,7 +43,7 @@ public class JwtTokenProvider {
     public String generateTokenAdmin(Admin admin) {
         Map<String, Object> claims = new HashMap<>();
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-        claims.put("admin", admin);
+        claims.put("user", admin);
 
         return Jwts.builder()
                 .setClaims(claims)

@@ -14,14 +14,14 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
-    @Mapping(target = "authorities",
+    @Mapping(target = "scopes",
              expression = "java(user.getAuthorities()"
                         + ".stream()"
                         + ".map(org.springframework.security.core.GrantedAuthority::getAuthority)"
                         + ".collect(java.util.stream.Collectors.toList()))")
     UserDTO toDTO(UserEntity user);
 
-    @Mapping(target = "authorities",
+    @Mapping(target = "scopes",
              expression = "java(user.getAuthorities()"
                         + ".stream()"
                         + ".map(org.springframework.security.core.GrantedAuthority::getAuthority)"
