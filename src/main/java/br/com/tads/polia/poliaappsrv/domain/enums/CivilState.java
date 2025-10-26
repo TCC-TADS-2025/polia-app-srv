@@ -5,6 +5,6 @@ public enum CivilState {
     MARRIED,
     DIVORCED,
     WIDOWED,
-    STABLE_UNION,
-    NOT_INFORMED,
+    STABLEUNION,
+    NOTINFORMED,
 }
