@@ -2,6 +2,7 @@ package br.com.tads.polia.poliaappsrv.adapter.input.controllers;
 
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.LoginDTO;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.RegisterDTO;
+import br.com.tads.polia.poliaappsrv.domain.dto.auth.TokenSubjectAdminDTO;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.TokenSubjectDTO;
 import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
 import br.com.tads.polia.poliaappsrv.domain.usecase.AuthUseCase;
@@ -20,8 +21,8 @@ public class AuthController {
     private AuthUseCase authUseCase;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenSubjectDTO> login(@RequestBody LoginDTO loginDTO) {
-        TokenSubjectDTO response = authUseCase.login(loginDTO);
+    public ResponseEntity<TokenSubjectAdminDTO> login(@RequestBody LoginDTO loginDTO) {
+        TokenSubjectAdminDTO response = authUseCase.login(loginDTO);
         return ResponseEntity.ok(response);
     }
 

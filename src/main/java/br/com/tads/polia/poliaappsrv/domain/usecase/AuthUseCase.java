@@ -1,5 +1,6 @@
 package br.com.tads.polia.poliaappsrv.domain.usecase;
 
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.AdminEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.UserEntity;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.LoginDTO;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.TokenSubjectAdminDTO;
@@ -8,6 +9,7 @@ import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
 import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import br.com.tads.polia.poliaappsrv.domain.exception.CpfAlredyExistsException;
 import br.com.tads.polia.poliaappsrv.domain.exception.EmailAlredyExistsException;
+import br.com.tads.polia.poliaappsrv.infrastructure.mappers.AdminMapper;
 import br.com.tads.polia.poliaappsrv.infrastructure.mappers.UserMapper;
 import br.com.tads.polia.poliaappsrv.infrastructure.security.JwtTokenProvider;
 import br.com.tads.polia.poliaappsrv.port.output.IAdminOutputPort;
@@ -34,29 +36,27 @@ public class AuthUseCase {
 
     private final AdminRepository adminRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
     private final JwtTokenProvider jwtTokenProvider;
 
     private final IAdminOutputPort adminOutputPort;
     private final IUserOutputPort userOutputPort;
 
-    private final UserMapper userMapper;
+    private final AdminMapper adminMapper;
 
-    public TokenSubjectDTO login(LoginDTO loginDTO) {
+    public TokenSubjectAdminDTO login(LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserEntity userEntity = userRepository.findByEmail(loginDTO.getEmail())
+        AdminEntity adminEntity = adminRepository.findByEmail(loginDTO.getEmail())
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o email: " + loginDTO.getEmail()));
         
-        User user = userMapper.userEntityToUser(userEntity);
-        String jwt = jwtTokenProvider.generateToken(user);
+        Admin admin = adminMapper.adminEntityToAdmin(adminEntity);
+        String jwt = jwtTokenProvider.generateTokenAdmin(admin);
 
-        return TokenSubjectDTO.builder()
+        return TokenSubjectAdminDTO.builder()
             .accessToken(jwt)
-            .user(user)
+            .admin(admin)
             .build();
     }
 
