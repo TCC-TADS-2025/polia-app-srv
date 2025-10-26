@@ -21,6 +21,11 @@ public interface UserMapper {
                         + ".collect(java.util.stream.Collectors.toList()))")
     UserDTO toDTO(UserEntity user);
 
+    @Mapping(target = "authorities",
+             expression = "java(user.getAuthorities()"
+                        + ".stream()"
+                        + ".map(org.springframework.security.core.GrantedAuthority::getAuthority)"
+                        + ".collect(java.util.stream.Collectors.toList()))")
     User userEntityToUser(UserEntity user);
     
     UserEntity toEntity(UserDTO userDTO);
