@@ -1,7 +1,7 @@
 package br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers;
 
 
-import br.com.tads.polia.poliaappsrv.adapter.input.api.response.AnswerResponse;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.response.AnswerCandidateResponse;
 import br.com.tads.polia.poliaappsrv.domain.entity.AnswerCandidate;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -13,6 +13,6 @@ public interface AnswerCandidateMapperResponse {
 
     AnswerCandidateMapperResponse INSTANCE = Mappers.getMapper(AnswerCandidateMapperResponse.class);
 
-    AnswerResponse answerCandidateToAnswerResponse(AnswerCandidate answer);
-    List<AnswerResponse> listAnswersCandidateToAnswerResponses(List<AnswerCandidate> answers);
+    AnswerCandidateResponse answerCandidateToAnswerCandidateResponse(AnswerCandidate answer);
+    List<AnswerCandidateResponse> listAnswersCandidateToAnswerCandidateResponses(List<AnswerCandidate> answers);
 }
