@@ -1,4 +1,5 @@
-package br.com.tads.polia.poliaappsrv.adapter.input.api.response;
+package br.com.tads.polia.poliaappsrv.adapter.input.api.request;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +11,12 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnswerResponse implements Serializable {
+public class AnswerCandidateRequest implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     private UUID candidateId;
     private UUID questionId;
     private Integer answerWeight;
-    private UUID answerId;
+
 }

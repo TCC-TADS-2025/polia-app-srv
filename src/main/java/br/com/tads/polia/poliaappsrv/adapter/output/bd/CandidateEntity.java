@@ -96,4 +96,7 @@ public class CandidateEntity {
     @UpdateTimestamp
     private LocalDateTime dataAlteracao;
 
+    private Integer coordinateX;
+    private Integer coordinateY;
+
 }

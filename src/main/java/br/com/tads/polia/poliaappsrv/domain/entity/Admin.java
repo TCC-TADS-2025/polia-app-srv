@@ -1,8 +1,5 @@
 package br.com.tads.polia.poliaappsrv.domain.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.com.tads.polia.poliaappsrv.domain.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
