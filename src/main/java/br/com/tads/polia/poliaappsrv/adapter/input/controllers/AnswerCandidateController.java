@@ -6,6 +6,7 @@ import br.com.tads.polia.poliaappsrv.adapter.input.api.response.AnswerCandidateR
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.AnswerResponse;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.AnswerCandidateMapperResponse;
 import br.com.tads.polia.poliaappsrv.domain.entity.Answer;
+import br.com.tads.polia.poliaappsrv.domain.entity.AnswerCandidate;
 import br.com.tads.polia.poliaappsrv.domain.usecase.AnswerCandidateUseCase;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -36,6 +38,16 @@ public class AnswerCandidateController {
         var result = answerCandidateUseCase.createAnswers(
                 MAPPER.listAnswerCandidateResquestToAnswer(answers)
         );
+        if(result == null || result.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        var response = MAPPER_RESPONSE.listAnswersCandidateToAnswerCandidateResponses(result);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping({"/{id}"})
+    public ResponseEntity<List<AnswerCandidateResponse>> getAnswerById(@PathVariable UUID id) {
+        List<AnswerCandidate> result = answerCandidateUseCase.getAnswerById(id);
         if(result == null || result.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

@@ -1,6 +1,7 @@
 package br.com.tads.polia.poliaappsrv.adapter.output;
 
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.AnswerCandidateEntity;
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.AnswerEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.mapper.AnswerCandidateOutputMapper;
 import br.com.tads.polia.poliaappsrv.domain.entity.AnswerCandidate;
 import br.com.tads.polia.poliaappsrv.port.output.IAnswerCandidateOutputPort;
@@ -67,5 +68,14 @@ public class AnswerCandidateOutputPort implements IAnswerCandidateOutputPort {
         }
 
         return MAPPER.listAnswerCandidateEntityToAnswerCandidate(savedAnswers);
+    }
+
+    @Override
+    public List<AnswerCandidate> getAnswerById(UUID id) {
+        List<AnswerCandidateEntity> entidades = answerCandidateRepository.findByCandidateId(id);
+        if (entidades == null || entidades.isEmpty()) {
+            return null;
+        }
+        return MAPPER.listAnswerCandidateEntityToAnswerCandidate(entidades);
     }
 }
