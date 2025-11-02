@@ -13,7 +13,7 @@ import java.util.UUID;
 public class AnswerResponse implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private UUID candidateId;
+    private UUID userId;
     private UUID questionId;
     private Integer answerWeight;
     private UUID answerId;
