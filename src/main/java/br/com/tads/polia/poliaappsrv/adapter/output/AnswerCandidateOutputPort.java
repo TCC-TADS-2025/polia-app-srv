@@ -59,7 +59,7 @@ public class AnswerCandidateOutputPort implements IAnswerCandidateOutputPort {
                 }
 
                 if (questionId != null) {
-                    var qaRef = questionAnswerRepository.getReferenceById(questionId);
+                    var qaRef = questionAnswerRepository.findByQuestion_Id(questionId);
                     entity.setQuestionAnswer(qaRef);
                 }
 

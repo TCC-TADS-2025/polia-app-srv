@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswerEntity, UUID> {
+
+    QuestionAnswerEntity findByQuestion_Id(UUID questionId);
 }
