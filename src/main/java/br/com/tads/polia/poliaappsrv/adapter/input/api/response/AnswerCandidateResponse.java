@@ -18,4 +18,6 @@ public class AnswerCandidateResponse implements Serializable {
     private UUID questionId;
     private Integer answerWeight;
     private UUID answerId;
+    private String questionText;
+    private String justification;
 }

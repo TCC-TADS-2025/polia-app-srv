@@ -21,6 +21,7 @@ public interface AnswerCandidateOutputMapper {
 
     @Mapping(source = "questionAnswer.idQuestionWeight", target = "questionId")
     @Mapping(source = "candidateId.id", target = "candidateId")
+    @Mapping(source = "questionAnswer.question.text", target = "questionText")
     AnswerCandidate answerCandidateEntityToAnswerCandidate(AnswerCandidateEntity entity);
 
     List<AnswerCandidate> listAnswerCandidateEntityToAnswerCandidate(List<AnswerCandidateEntity> entities);

@@ -1,6 +1,5 @@
 package br.com.tads.polia.poliaappsrv.domain.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +15,7 @@ public class AnswerCandidate {
     private UUID questionId;
     private Integer answerWeight;
     private UUID candidateId;
+    private String questionText;
     private String justification;
     private String evidence;
 }
