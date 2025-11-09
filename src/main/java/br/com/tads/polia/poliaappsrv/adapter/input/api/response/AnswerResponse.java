@@ -17,4 +17,5 @@ public class AnswerResponse implements Serializable {
     private UUID questionId;
     private Integer answerWeight;
     private UUID answerId;
+    private String questionText;
 }

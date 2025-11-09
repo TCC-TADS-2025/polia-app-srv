@@ -20,6 +20,7 @@ public interface AnswerOutputMapper {
 
     @Mapping(source = "questionAnswer.idQuestionWeight", target = "questionId")
     @Mapping(source = "userId.id", target = "userId")
+    @Mapping(source = "questionAnswer.question.text" , target = "questionText")
     Answer answerEntityToAnswer(AnswerEntity entity);
 
     List<Answer> listAnswerEntityToAnswer(List<AnswerEntity> entities);

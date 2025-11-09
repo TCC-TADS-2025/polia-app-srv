@@ -15,4 +15,5 @@ public class Answer {
     private UUID questionId;
     private Integer answerWeight;
     private String userId;
+    private String questionText;
 }
