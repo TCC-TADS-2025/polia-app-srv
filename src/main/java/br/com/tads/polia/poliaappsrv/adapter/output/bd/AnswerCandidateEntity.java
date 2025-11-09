@@ -32,6 +32,10 @@ public class AnswerCandidateEntity {
 
     @Column(nullable = false)
     private Integer answerWeight;
+    @Column(length = 2000)
+    private String justification;
+    @Column(length = 2000)
+    private String evidence;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

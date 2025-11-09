@@ -16,4 +16,6 @@ public class AnswerCandidate {
     private UUID questionId;
     private Integer answerWeight;
     private UUID candidateId;
+    private String justification;
+    private String evidence;
 }

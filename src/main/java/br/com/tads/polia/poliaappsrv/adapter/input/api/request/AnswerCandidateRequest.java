@@ -18,5 +18,7 @@ public class AnswerCandidateRequest implements Serializable {
     private UUID candidateId;
     private UUID questionId;
     private Integer answerWeight;
+    private String justification;
+    private String evidence;
 
 }
