@@ -40,6 +40,7 @@ public class Candidate implements Serializable {
     private Integer candidacyNumber;
     private BigDecimal candidateAsset;
     private String proposals;
+    private String statusIa;
     private Integer coordenateX;
     private Integer coordenateY;
 

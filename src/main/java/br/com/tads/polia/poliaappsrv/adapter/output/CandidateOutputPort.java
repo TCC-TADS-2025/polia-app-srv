@@ -44,6 +44,7 @@ public class CandidateOutputPort implements ICandidateOutputPort {
         candidateEntity.setCandidacyNumber(candidate.getCandidacyNumber());
         candidateEntity.setCandidateAsset(candidate.getCandidateAsset());
         candidateEntity.setProposals(candidate.getProposals());
+        candidateEntity.setStatusIa(candidate.getStatusIa());
         candidateRepository.save(candidateEntity);
         Candidate candidateCreated = MAPPER.candidateEntityToCandidate(candidateEntity);
         return candidateCreated;
@@ -96,6 +97,7 @@ public class CandidateOutputPort implements ICandidateOutputPort {
         result.setCandidacyNumber(candidate.getCandidacyNumber());
         result.setCandidateAsset(candidate.getCandidateAsset());
         result.setProposals(candidate.getProposals());
+        result.setStatusIa(candidate.getStatusIa());
         CandidateEntity candidateEntity = MAPPER.candidateToCandidateEntity(result);
         candidateRepository.save(candidateEntity);
         Candidate candidateUpdated = MAPPER.candidateEntityToCandidate(candidateEntity);

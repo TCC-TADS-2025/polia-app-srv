@@ -62,7 +62,7 @@ public class UserEntity implements UserDetails{
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role.getAuthority()));
+        Collection<GrantedAuthority> authorities = Collections.emptyList();
         authorities.addAll(this.scopes.stream()
                 .map(SimpleGrantedAuthority::new)
                 .toList());

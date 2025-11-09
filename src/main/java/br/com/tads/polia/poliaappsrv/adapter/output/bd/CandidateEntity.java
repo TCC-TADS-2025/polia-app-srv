@@ -89,6 +89,8 @@ public class CandidateEntity {
     @Column(nullable = false)
     private String proposals;
 
+    private String statusIa;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime dataInclusao;

@@ -36,4 +36,5 @@ public class CandidateResponse implements Serializable {
     private Integer candidacyNumber;
     private Double candidateAsset;
     private String proposals;
+    private String statusIa;
 }
