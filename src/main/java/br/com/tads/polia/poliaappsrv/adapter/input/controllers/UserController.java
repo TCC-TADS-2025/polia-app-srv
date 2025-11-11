@@ -2,17 +2,22 @@ package br.com.tads.polia.poliaappsrv.adapter.input.controllers;
 
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.UserRequest;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.mapper.UserMapperRequest;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.response.CandidateResponse;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.UserResponse;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.CandidateMapperResponse;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.mappers.UserMapperResponse;
 import br.com.tads.polia.poliaappsrv.domain.dto.auth.TokenSubjectDTO;
+import br.com.tads.polia.poliaappsrv.domain.entity.Candidate;
 import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import br.com.tads.polia.poliaappsrv.domain.usecase.AuthUseCase;
+import br.com.tads.polia.poliaappsrv.domain.usecase.CandidateUseCase;
 import br.com.tads.polia.poliaappsrv.domain.usecase.UserUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/users")
@@ -25,7 +30,13 @@ public class UserController {
     private UserMapperResponse MAPPER_RESPONSE;
 
     @Autowired
+    private CandidateMapperResponse MAPPER_RESPONSE_CANDIDATE;
+
+    @Autowired
     private UserUseCase userUseCase;
+
+    @Autowired
+    private CandidateUseCase candidateUseCase;
 
     @Autowired
     private AuthUseCase authUseCase;
@@ -76,6 +87,14 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-
+    @GetMapping("/{userId}/candidates")
+    public ResponseEntity<List<CandidateResponse>> findNextsByUserId(@PathVariable String userId) {
+        List<Candidate> candidates = candidateUseCase.findNextsByUserId(userId);
+        if (candidates == null || candidates.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        var candidateResponse = MAPPER_RESPONSE_CANDIDATE.listCandidateToListCandidateResponse(candidates);
+        return ResponseEntity.ok(candidateResponse);
+    }
 
 }

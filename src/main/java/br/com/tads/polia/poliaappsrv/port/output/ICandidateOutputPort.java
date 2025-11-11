@@ -9,6 +9,7 @@ public interface ICandidateOutputPort {
 
     Candidate createCandidate(Candidate candidate);
     List<Candidate> getAllCandidates();
+    List<Candidate> findNextsByUserId(String userId);
     Candidate getCandidateById(UUID id);
     void deleteAdminById(UUID id);
     Candidate updateCandidateById(UUID id, Candidate candidate);

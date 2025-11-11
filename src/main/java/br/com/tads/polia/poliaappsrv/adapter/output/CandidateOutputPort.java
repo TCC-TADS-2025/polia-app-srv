@@ -103,4 +103,13 @@ public class CandidateOutputPort implements ICandidateOutputPort {
         Candidate candidateUpdated = MAPPER.candidateEntityToCandidate(candidateEntity);
         return candidateUpdated;
     }
+
+    @Override
+    public List<Candidate> findNextsByUserId(String userId) {
+        var result = MAPPER.listCandidateProjectionToListCandidate(candidateRepository.findNextsByUserId(userId));
+        if(result == null || result.isEmpty()) {
+            return null;
+        }
+        return result;
+    }
 }

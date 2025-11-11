@@ -37,4 +37,6 @@ public class CandidateResponse implements Serializable {
     private Double candidateAsset;
     private String proposals;
     private String statusIa;
+    private Integer coordinateX;
+    private Integer coordinateY;
 }
