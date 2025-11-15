@@ -16,6 +16,6 @@ public class TokenSubjectDTO {
     private String accessToken;
     @Builder.Default
     private String tokenType = "Bearer";
-    private LocalDateTime expiresIn;
+    private long expiresIn;
     private User user;
 }

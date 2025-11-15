@@ -74,7 +74,7 @@ public class JwtTokenProvider {
         return false;
     }
 
-    public LocalDateTime getExpirationDateFromToken(String token) {
+    public long getExpirationDateFromToken(String token) {
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         Date expirationDate = Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -82,7 +82,7 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody()
                 .getExpiration();
-        return LocalDateTime.ofInstant(expirationDate.toInstant(), java.time.ZoneId.systemDefault());
+        return expirationDate.getTime();
     }
 
 }
