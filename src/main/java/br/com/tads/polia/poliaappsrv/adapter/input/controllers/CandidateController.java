@@ -79,4 +79,26 @@ public class CandidateController {
         candidateUseCase.deleteCandidateById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{candidateId}/favorite")
+    public ResponseEntity<Void> addFavorite(@PathVariable UUID candidateId, @RequestParam String userId) {
+        candidateUseCase.addFavorite(userId, candidateId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{candidateId}/favorite")
+    public ResponseEntity<Void> removeFavorite(@PathVariable UUID candidateId, @RequestParam String userId) {
+        candidateUseCase.removeFavorite(userId, candidateId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/favorites")
+    public ResponseEntity<List<CandidateResponse>> getUserFavorites(@RequestParam String userId) {
+        var result = candidateUseCase.getUserFavoriteCandidates(userId);
+        if (result == null || result.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        var candidatesResponse = MAPPER_RESPONSE.listCandidateToListCandidateResponse(result);
+        return ResponseEntity.ok(candidatesResponse);
+    }
 }

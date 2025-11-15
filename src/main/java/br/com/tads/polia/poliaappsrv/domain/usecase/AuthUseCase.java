@@ -103,7 +103,7 @@ public class AuthUseCase {
         if (userRepository.existsByCpf(user.getCpf())) {
             throw new CpfAlredyExistsException();
         }
-
+        user.setRole(null);
         user = userOutputPort.createUser(user);
 
         String jwt = jwtTokenProvider.generateToken(user);
