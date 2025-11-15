@@ -1,6 +1,5 @@
 package br.com.tads.polia.poliaappsrv.domain.dto.auth;
 
-import java.time.LocalDateTime;
 
 import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
 import lombok.AllArgsConstructor;

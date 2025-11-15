@@ -12,6 +12,7 @@ import java.util.UUID;
 public interface AnswerCandidateRepository extends JpaRepository<AnswerCandidateEntity, UUID> {
     List<AnswerCandidateEntity> findByCandidateId_Id(UUID candidateId);
     Optional<AnswerCandidateEntity> findByCandidateId_IdAndQuestionAnswer_IdQuestionWeight(UUID candidateId, UUID questionAnswerId);
+    Optional<AnswerCandidateEntity> findByCandidateId_IdAndQuestionAnswer_Question_Id(UUID candidateId, UUID questionAnswerId);
     @Query("SELECT a FROM AnswerCandidateEntity a WHERE a.candidateId.id = :candidateId")
     List<AnswerCandidateEntity> findByCandidateId(@Param("candidateId") UUID candidateId);
 }

@@ -6,6 +6,7 @@ import br.com.tads.polia.poliaappsrv.domain.entity.Answer;
 import br.com.tads.polia.poliaappsrv.port.output.IAnswerOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.AnswerRepository;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.QuestionAnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class AnswerOutputPort implements IAnswerOutputPort {
             UUID questionId = answer.getQuestionId();
 
             Optional<AnswerEntity> existing = answerRepository
-                    .findByUserId_IdAndQuestionAnswer_IdQuestionWeight(userId, questionId);
+                    .findByUserId_IdAndQuestionAnswer_Question_Id(userId, questionId);
 
             AnswerEntity entity = MAPPER.answerToAnswerEntity(answer);
 
@@ -53,12 +54,14 @@ public class AnswerOutputPort implements IAnswerOutputPort {
                 savedAnswers.add(answerRepository.save(existingEntity));
             } else {
                 if (userId != null) {
-                    var userRef = userRepository.getReferenceById(userId);
+                    var userRef = userRepository.findById(userId)
+                                    .orElseThrow(() -> new EntityNotFoundException("Usuário com o ID " + userId + " não encontrado."));
                     entity.setUserId(userRef);
                 }
 
                 if (questionId != null) {
-                    var qaRef = questionAnswerRepository.getReferenceById(questionId);
+                    var qaRef = questionAnswerRepository.findByQuestion_Id(questionId)
+                                                            .orElseThrow(() -> new EntityNotFoundException("Questão com o ID " + questionId + " não encontrada."));
                     entity.setQuestionAnswer(qaRef);
                 }
 

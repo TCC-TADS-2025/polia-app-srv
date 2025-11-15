@@ -12,6 +12,7 @@ import java.util.UUID;
 public interface AnswerRepository extends JpaRepository<AnswerEntity, UUID> {
     List<AnswerEntity> findByUserId_Id(String userId);
     Optional<AnswerEntity> findByUserId_IdAndQuestionAnswer_IdQuestionWeight(String userId, UUID questionAnswerId);
+    Optional<AnswerEntity> findByUserId_IdAndQuestionAnswer_Question_Id(String userId, UUID questionId);
     @Query("SELECT a FROM AnswerEntity a WHERE a.userId.id = :userId")
     List<AnswerEntity> findByUserId(@Param("userId") String userId);
 }

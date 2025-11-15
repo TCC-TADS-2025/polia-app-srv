@@ -8,6 +8,8 @@ import br.com.tads.polia.poliaappsrv.port.output.IAnswerCandidateOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.AnswerCandidateRepository;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.CandidateRepository;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.QuestionAnswerRepository;
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +45,7 @@ public class AnswerCandidateOutputPort implements IAnswerCandidateOutputPort {
             UUID questionId = answer.getQuestionId();
 
             Optional<AnswerCandidateEntity> existing = answerCandidateRepository
-                    .findByCandidateId_IdAndQuestionAnswer_IdQuestionWeight(candidateId, questionId);
+                    .findByCandidateId_IdAndQuestionAnswer_Question_Id(candidateId, questionId);
 
             AnswerCandidateEntity entity = MAPPER.answerCandidateToAnswerCandidateEntity(answer);
 
@@ -54,12 +56,14 @@ public class AnswerCandidateOutputPort implements IAnswerCandidateOutputPort {
                 savedAnswers.add(answerCandidateRepository.save(existingEntity));
             } else {
                 if (candidateId != null) {
-                    var candidateRef = candidateRepository.getReferenceById(candidateId);
+                    var candidateRef = candidateRepository.findById(candidateId)
+                                    .orElseThrow(() -> new EntityNotFoundException("Candidato com o ID " + candidateId + " não encontrado."));
                     entity.setCandidateId(candidateRef);
                 }
 
                 if (questionId != null) {
-                    var qaRef = questionAnswerRepository.findByQuestion_Id(questionId);
+                    var qaRef = questionAnswerRepository.findByQuestion_Id(questionId)
+                                                            .orElseThrow(() -> new EntityNotFoundException("Questão com o ID " + questionId + " não encontrada."));
                     entity.setQuestionAnswer(qaRef);
                 }
 
