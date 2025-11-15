@@ -35,6 +35,14 @@ public class CandidateUseCase {
         return outputPort.getAllCandidates();
     }
 
+    public List<Candidate> getAllCandidatesSortedByName() {
+        return outputPort.getAllCandidatesSortedByName();
+    }
+
+    public List<Candidate> getAllCandidatesSorted(String sortBy, String direction) {
+        return outputPort.getAllCandidatesSorted(sortBy, direction);
+    }
+
     public List<Candidate> findNextsByUserId(String userId) {
         if (userId == null || userId.isEmpty()) {
             throw new IllegalArgumentException("User ID cannot be null or empty");

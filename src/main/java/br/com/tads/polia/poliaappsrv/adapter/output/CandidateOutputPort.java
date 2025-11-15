@@ -3,10 +3,13 @@ package br.com.tads.polia.poliaappsrv.adapter.output;
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.CandidateEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.mapper.CandidateOutputMapper;
 import br.com.tads.polia.poliaappsrv.domain.entity.Candidate;
+import br.com.tads.polia.poliaappsrv.domain.enums.SortDirection;
+import br.com.tads.polia.poliaappsrv.domain.enums.SortField;
 import br.com.tads.polia.poliaappsrv.port.output.ICandidateOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.CandidateRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,6 +63,35 @@ public class CandidateOutputPort implements ICandidateOutputPort {
     }
 
     @Override
+    public List<Candidate> getAllCandidatesSortedByName() {
+        var result = MAPPER.listCandidateEntityToListCandidate(candidateRepository.findAllByOrderByNameAsc());
+        if(result == null || result.isEmpty()) {
+            return null;
+        }
+        return result;
+    }
+
+    @Override
+    public List<Candidate> getAllCandidatesSorted(String sortBy, String direction) {
+        SortField sortField = SortField.fromString(sortBy);
+        SortDirection sortDirection = SortDirection.fromString(direction);
+        
+        Sort sort = Sort.by(
+            sortDirection.toSpringDirection(),
+            sortField.getFieldName()
+        );
+        
+        var result = MAPPER.listCandidateEntityToListCandidate(
+            candidateRepository.findAll(sort)
+        );
+        
+        if(result == null || result.isEmpty()) {
+            return null;
+        }
+        return result;
+    }
+
+    @Override
     public Candidate getCandidateById(UUID id) {
         var result = MAPPER.candidateEntityToCandidate(candidateRepository.findById(id).orElse(null));
         if (result == null) {
@@ -70,7 +102,7 @@ public class CandidateOutputPort implements ICandidateOutputPort {
 
     @Override
     public void deleteAdminById(UUID id) {
-        CandidateEntity candidate = candidateRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Candidate not found with ID: " + id));
+        candidateRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Candidate not found with ID: " + id));
         candidateRepository.deleteById(id);
     }
 

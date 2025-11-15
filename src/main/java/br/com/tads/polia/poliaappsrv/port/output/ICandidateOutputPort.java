@@ -9,6 +9,8 @@ public interface ICandidateOutputPort {
 
     Candidate createCandidate(Candidate candidate);
     List<Candidate> getAllCandidates();
+    List<Candidate> getAllCandidatesSortedByName();
+    List<Candidate> getAllCandidatesSorted(String sortBy, String direction);
     List<Candidate> findNextsByUserId(String userId);
     Candidate getCandidateById(UUID id);
     void deleteAdminById(UUID id);

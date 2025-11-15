@@ -51,6 +51,28 @@ public class CandidateController {
         return ResponseEntity.ok(candidatesResponse);
     }
 
+    @GetMapping("/sorted-by-name")
+    public ResponseEntity<List<CandidateResponse>> getAllCandidatesSortedByName() {
+        List<Candidate> candidates = candidateUseCase.getAllCandidatesSortedByName();
+        if (candidates == null || candidates.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        var candidatesResponse = MAPPER_RESPONSE.listCandidateToListCandidateResponse(candidates);
+        return ResponseEntity.ok(candidatesResponse);
+    }
+
+    @GetMapping("/sorted")
+    public ResponseEntity<List<CandidateResponse>> getAllCandidatesSorted(
+            @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
+            @RequestParam(name = "direction", defaultValue = "ASC") String direction) {
+        List<Candidate> candidates = candidateUseCase.getAllCandidatesSorted(sortBy, direction);
+        if (candidates == null || candidates.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        var candidatesResponse = MAPPER_RESPONSE.listCandidateToListCandidateResponse(candidates);
+        return ResponseEntity.ok(candidatesResponse);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<CandidateResponse> getCandidateById(@PathVariable UUID id) {
         Candidate candidate = candidateUseCase.getCandidateById(id);

@@ -3,6 +3,7 @@ package br.com.tads.polia.poliaappsrv.port.output.bd.repository;
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.CandidateEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.projection.CandidateNearProjection;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +14,10 @@ import java.util.UUID;
 
 @Repository
 public interface CandidateRepository extends JpaRepository<CandidateEntity, UUID> {
+
+    List<CandidateEntity> findAllByOrderByNameAsc();
+
+    List<CandidateEntity> findAll(Sort sort);
 
     @Query(nativeQuery = true, value = """
             
