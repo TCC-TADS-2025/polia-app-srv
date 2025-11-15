@@ -9,4 +9,5 @@ public interface IAnswerCandidateOutputPort {
 
     List<AnswerCandidate> createAnswers(List<AnswerCandidate> answers);
     List<AnswerCandidate> getAnswerById(UUID id);
+    void deleteByCandidateId(UUID candidateId);
 }

@@ -8,6 +8,8 @@ import br.com.tads.polia.poliaappsrv.domain.enums.SortField;
 import br.com.tads.polia.poliaappsrv.port.output.ICandidateOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.CandidateRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,11 @@ public class CandidateOutputPort implements ICandidateOutputPort {
     private CandidateOutputMapper MAPPER;
 
     private final CandidateRepository candidateRepository;
+    private final AnswerCandidateOutputPort answerCandidateOutputPort;
 
-    public CandidateOutputPort(CandidateRepository candidateRepository) {
+    public CandidateOutputPort(CandidateRepository candidateRepository, AnswerCandidateOutputPort answerCandidateOutputPort) {
         this.candidateRepository = candidateRepository;
+        this.answerCandidateOutputPort = answerCandidateOutputPort;
     }
 
     @Override
@@ -101,8 +105,10 @@ public class CandidateOutputPort implements ICandidateOutputPort {
     }
 
     @Override
+    @Transactional
     public void deleteAdminById(UUID id) {
         candidateRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Candidate not found with ID: " + id));
+        answerCandidateOutputPort.deleteByCandidateId(id);
         candidateRepository.deleteById(id);
     }
 

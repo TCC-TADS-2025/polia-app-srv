@@ -82,4 +82,10 @@ public class AnswerCandidateOutputPort implements IAnswerCandidateOutputPort {
         }
         return MAPPER.listAnswerCandidateEntityToAnswerCandidate(entidades);
     }
+
+    @Override
+    public void deleteByCandidateId(UUID candidateId) {
+        List<AnswerCandidateEntity> answers = answerCandidateRepository.findByCandidateId_Id(candidateId);
+        answerCandidateRepository.deleteAll(answers);
+    }
 }
