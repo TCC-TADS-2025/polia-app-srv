@@ -128,8 +128,8 @@ public class AuthUseCase {
     }
 
 
-    public List<UserEntity> getAll() {
-        return userRepository.findAll();
+    public List<AdminEntity> getAll() {
+        return adminRepository.findAll();
     }
 
     @Transactional
