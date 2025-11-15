@@ -20,6 +20,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import br.com.tads.polia.poliaappsrv.domain.exception.CpfAlredyExistsException;
 import br.com.tads.polia.poliaappsrv.domain.exception.EmailAlredyExistsException;
+import br.com.tads.polia.poliaappsrv.domain.exception.EmailNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -131,6 +132,19 @@ public class GlobalExceptionHandler {
         @ExceptionHandler(EntityNotFoundException.class)
         @ResponseStatus(HttpStatus.NOT_FOUND)
         public ResponseEntity<ExceptionResponse> handleEntityNotFoundException(EntityNotFoundException ex , HttpServletRequest request) {
+                ExceptionResponse error = new ExceptionResponse(
+                        request.getRequestURI(),
+                        ex.getMessage(),
+                        HttpStatus.NOT_FOUND.value(),
+                        LocalDateTime.now(),
+                        List.of()
+                );
+                return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
+        
+        @ExceptionHandler(EmailNotFoundException.class)
+        @ResponseStatus(HttpStatus.NOT_FOUND)
+        public ResponseEntity<ExceptionResponse> handleEmailNotFoundExceptionFoundException(EmailNotFoundException ex , HttpServletRequest request) {
                 ExceptionResponse error = new ExceptionResponse(
                         request.getRequestURI(),
                         ex.getMessage(),

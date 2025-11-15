@@ -25,10 +25,25 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:equipamentosmatheus@gmail.com}
+    password: ${MAIL_PASSWORD:hvnr ygfv bsnj pylg}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
 jwt:
   secret: wu9VYp7NkD3Gq1rLv2xE5zP8cJ6bX9mQ0oA4fK7yH1tS5dF3gU6iW4nM2jR9eB0vC8lO5pI3hT7kY2
-  expiration: 86400000 # 24 hours in milliseconds
+  expiration: 86400000
 
 springdoc:
   api-docs:

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public record ExceptionResponse(
         String path,
         String message,
-        int statusCode,
+        int status,
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime dateTime,
         List<FieldError> fieldErrors
