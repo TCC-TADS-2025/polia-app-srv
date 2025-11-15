@@ -2,6 +2,7 @@ package br.com.tads.polia.poliaappsrv.adapter.input.api.request.mapper;
 
 
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.UserRequest;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.request.UserUpdateRequest;
 import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import org.mapstruct.Mapper;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +17,8 @@ public interface UserMapperRequest {
     UserMapperRequest INSTANCE = org.mapstruct.factory.Mappers.getMapper(UserMapperRequest.class);
 
     User userRequestToUser(UserRequest request);
+    
+    User userUpdateRequestToUser(UserUpdateRequest request);
 
     default List<String> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
         if (authorities == null) return null;

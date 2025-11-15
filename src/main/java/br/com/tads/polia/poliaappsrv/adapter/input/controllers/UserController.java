@@ -1,6 +1,7 @@
 package br.com.tads.polia.poliaappsrv.adapter.input.controllers;
 
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.UserRequest;
+import br.com.tads.polia.poliaappsrv.adapter.input.api.request.UserUpdateRequest;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.request.mapper.UserMapperRequest;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.CandidateResponse;
 import br.com.tads.polia.poliaappsrv.adapter.input.api.response.UserResponse;
@@ -76,9 +77,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUserById(@PathVariable String id, @RequestBody UserRequest userRequest) {
-        userUseCase.checkPassword(userRequest);
-        User user = MAPPER_REQUEST.userRequestToUser(userRequest);
+    public ResponseEntity<UserResponse> updateUserById(@PathVariable String id, @RequestBody UserUpdateRequest userRequest) {
+        User user = MAPPER_REQUEST.userUpdateRequestToUser(userRequest);
         user = userUseCase.updateUserById(id, user);
         if (user == null) {
             return ResponseEntity.noContent().build();
