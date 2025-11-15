@@ -36,19 +36,9 @@ public class AuthController {
 
     @PostMapping("/recover-password")
     public ResponseEntity<PasswordRecoveryResponseDTO> recoverPassword(@RequestBody PasswordRecoveryDTO recoveryDTO) throws Exception {
-        try {
-            // Tentar recuperar senha do usuário
             PasswordRecoveryResponseDTO response = authUseCase.recoverUserPassword(recoveryDTO);
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            // Se não encontrar usuário, tentar administrador
-            try {
-                PasswordRecoveryResponseDTO response = authUseCase.recoverAdminPassword(recoveryDTO);
-                return ResponseEntity.ok(response);
-            } catch (Exception adminException) {
-                throw new RuntimeException("Nenhuma conta encontrada com o email fornecido", adminException);
-            }
-        }
+       
     }
 
 }

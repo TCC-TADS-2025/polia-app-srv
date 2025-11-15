@@ -21,7 +21,6 @@ import br.com.tads.polia.poliaappsrv.port.output.IAdminOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.IUserOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.AdminRepository;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
-import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -68,6 +67,7 @@ public class AuthUseCase {
 
         return TokenSubjectAdminDTO.builder()
             .accessToken(jwt)
+            .expiresIn(jwtTokenProvider.getExpirationDateFromToken(jwt))
             .admin(admin)
             .build();
     }
@@ -85,6 +85,7 @@ public class AuthUseCase {
 
         return TokenSubjectDTO.builder()
                 .accessToken(jwt)
+                .expiresIn(jwtTokenProvider.getExpirationDateFromToken(jwt))
                 .user(user)
                 .build();
     }
@@ -121,6 +122,7 @@ public class AuthUseCase {
 
         return TokenSubjectDTO.builder()
                 .accessToken(jwt)
+                .expiresIn(jwtTokenProvider.getExpirationDateFromToken(jwt))
                 .user(user)
                 .build();
     }
@@ -143,7 +145,6 @@ public class AuthUseCase {
         String newPassword = PasswordGenerator.generateStrongPassword();
         String encodedPassword = passwordEncoder.encode(newPassword);
         
-        // Salvar a nova senha
         userEntity.setPassword(encodedPassword);
         userRepository.save(userEntity);
         

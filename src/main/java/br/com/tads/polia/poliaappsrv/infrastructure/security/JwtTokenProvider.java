@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +72,17 @@ public class JwtTokenProvider {
             System.out.println("Token nulo");
         }
         return false;
+    }
+
+    public LocalDateTime getExpirationDateFromToken(String token) {
+        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        Date expirationDate = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+        return LocalDateTime.ofInstant(expirationDate.toInstant(), java.time.ZoneId.systemDefault());
     }
 
 }
