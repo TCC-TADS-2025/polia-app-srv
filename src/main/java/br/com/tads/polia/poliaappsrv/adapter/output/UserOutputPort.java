@@ -72,6 +72,9 @@ public class UserOutputPort implements IUserOutputPort {
         result.setName(user.getName());
         result.setEmail(user.getEmail());
         result.setCpf(user.getCpf());
+        if(user.getPassword() != null && !user.getPassword().isEmpty()) {
+            result.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         UserEntity userEntity = MAPPER.userToUserEntity(result);
         userEntity.setEnabled(true);
         userEntity.setRole(Role.USER);
