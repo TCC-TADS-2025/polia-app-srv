@@ -4,6 +4,8 @@ import br.com.tads.polia.poliaappsrv.adapter.output.bd.UserEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.mapper.UserOutputMapper;
 import br.com.tads.polia.poliaappsrv.domain.entity.User;
 import br.com.tads.polia.poliaappsrv.domain.enums.Role;
+import br.com.tads.polia.poliaappsrv.domain.exception.CpfAlredyExistsException;
+import br.com.tads.polia.poliaappsrv.domain.exception.EmailAlredyExistsException;
 import br.com.tads.polia.poliaappsrv.port.output.IUserOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,6 +33,17 @@ public class UserOutputPort implements IUserOutputPort {
     @Override
     public User createUser(User user) {
         UserEntity userEntity = MAPPER.userToUserEntity(user);
+
+        var userByEmail = userRepository.findByEmail(userEntity.getEmail());
+        if (userByEmail.isPresent()) {
+            throw new EmailAlredyExistsException();
+        }
+
+        var userByCpf = userRepository.findByCpf(userEntity.getCpf().replaceAll("[^\\d]", ""));
+        if (userByCpf.isPresent()) {
+            throw new CpfAlredyExistsException();
+        }
+
         userEntity.setId(UUID.randomUUID().toString());
         userEntity.setCpf(userEntity.getCpf().replaceAll("[^\\d]", ""));
         userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -67,6 +80,12 @@ public class UserOutputPort implements IUserOutputPort {
     @Override
     public User updateUserById(String id, User user) {
         var result = MAPPER.userEntityToUser(userRepository.findById(id).orElse(null));
+        
+        var userByCpf = userRepository.findByCpfAndNotId(user.getCpf().replaceAll("[^\\d]", ""), id);
+        if (userByCpf.isPresent()) {
+            throw new CpfAlredyExistsException();
+        }
+
         if (result == null) {
             return null;
         }

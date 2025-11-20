@@ -162,7 +162,7 @@ public class GlobalExceptionHandler {
                 ExceptionResponse error = new ExceptionResponse(
                         request.getRequestURI(),
                         ex.getMessage(),
-                        HttpStatus.NOT_FOUND.value(),
+                        HttpStatus.BAD_REQUEST.value(),
                         LocalDateTime.now(),
                         List.of(new ExceptionResponse.FieldError(
                                 "cpf",
@@ -179,7 +179,7 @@ public class GlobalExceptionHandler {
                 ExceptionResponse error = new ExceptionResponse(
                         request.getRequestURI(),
                         ex.getMessage(),
-                        HttpStatus.NOT_FOUND.value(),
+                        HttpStatus.BAD_REQUEST.value(),
                         LocalDateTime.now(),
                         List.of(new ExceptionResponse.FieldError(
                                 "email",
