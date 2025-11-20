@@ -81,7 +81,7 @@ public class UserOutputPort implements IUserOutputPort {
     public User updateUserById(String id, User user) {
         var result = MAPPER.userEntityToUser(userRepository.findById(id).orElse(null));
         
-        var userByCpf = userRepository.findByCpfAndNotId(user.getCpf().replaceAll("[^\\d]", ""), id);
+        var userByCpf = userRepository.findByCpfAndIdNot(user.getCpf().replaceAll("[^\\d]", ""), id);
         if (userByCpf.isPresent()) {
             throw new CpfAlredyExistsException();
         }
