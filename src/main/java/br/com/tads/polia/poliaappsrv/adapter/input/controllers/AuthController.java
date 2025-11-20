@@ -40,5 +40,12 @@ public class AuthController {
             return ResponseEntity.ok(response);
        
     }
+    
+    @PostMapping("/recover-password/admin")
+    public ResponseEntity<PasswordRecoveryResponseDTO> recoverAdminPassword(@RequestBody PasswordRecoveryDTO recoveryDTO) throws Exception {
+            PasswordRecoveryResponseDTO response = authUseCase.recoverAdminPassword(recoveryDTO);
+            return ResponseEntity.ok(response);
+       
+    }
 
 }
