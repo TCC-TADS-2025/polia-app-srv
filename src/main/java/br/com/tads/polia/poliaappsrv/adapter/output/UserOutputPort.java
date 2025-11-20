@@ -32,6 +32,7 @@ public class UserOutputPort implements IUserOutputPort {
     public User createUser(User user) {
         UserEntity userEntity = MAPPER.userToUserEntity(user);
         userEntity.setId(UUID.randomUUID().toString());
+        userEntity.setCpf(userEntity.getCpf().replaceAll("[^\\d]", ""));
         userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
         userEntity.setEnabled(true);
         userEntity.setRole(Role.USER);
@@ -59,7 +60,7 @@ public class UserOutputPort implements IUserOutputPort {
 
     @Override
     public void deleteUserById(String id) {
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
+        userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
         userRepository.deleteById(id);
     }
 
@@ -71,7 +72,7 @@ public class UserOutputPort implements IUserOutputPort {
         }
         result.setName(user.getName());
         result.setEmail(user.getEmail());
-        result.setCpf(user.getCpf());
+        result.setCpf(user.getCpf().replaceAll("[^\\d]", ""));
         if(user.getPassword() != null && !user.getPassword().isEmpty()) {
             result.setPassword(passwordEncoder.encode(user.getPassword()));
         }

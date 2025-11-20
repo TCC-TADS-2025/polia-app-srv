@@ -28,7 +28,9 @@ public class CoordinateCalculatorUseCase {
 
     public Coordinate calculateCoordinateForUser(String userId) {
         List<AnswerEntity> answers = answerRepository.findByUserId_Id(userId);
-
+        if(answers == null || answers.isEmpty()) {
+            return new Coordinate(null, null);
+        }
         int totalX = 0;
         int totalY = 0;
 
@@ -56,5 +58,5 @@ public class CoordinateCalculatorUseCase {
         return new Coordinate((int) normalizedX, (int) normalizedY);
     }
 
-    public record Coordinate(int x, int y) {}
+    public record Coordinate(Integer x, Integer y) {}
 }
