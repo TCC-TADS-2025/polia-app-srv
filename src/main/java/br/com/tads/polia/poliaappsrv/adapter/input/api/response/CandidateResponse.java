@@ -39,4 +39,5 @@ public class CandidateResponse implements Serializable {
     private String statusIa;
     private Integer coordinateX;
     private Integer coordinateY;
+    private Boolean favorite;
 }

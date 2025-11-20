@@ -2,10 +2,17 @@ package br.com.tads.polia.poliaappsrv.adapter.output;
 
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.CandidateEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.mapper.CandidateOutputMapper;
+import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
 import br.com.tads.polia.poliaappsrv.domain.entity.Candidate;
 import br.com.tads.polia.poliaappsrv.domain.enums.SortDirection;
 import br.com.tads.polia.poliaappsrv.domain.enums.SortField;
 import br.com.tads.polia.poliaappsrv.port.output.ICandidateOutputPort;
+import br.com.tads.polia.poliaappsrv.adapter.output.FavoriteCandidateOutputPort;
+import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.UserEntity;
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.AdminEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.CandidateRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -25,10 +32,17 @@ public class CandidateOutputPort implements ICandidateOutputPort {
 
     private final CandidateRepository candidateRepository;
     private final AnswerCandidateOutputPort answerCandidateOutputPort;
+    private final FavoriteCandidateOutputPort favoriteCandidateOutputPort;
+    private final UserRepository userRepository;
 
-    public CandidateOutputPort(CandidateRepository candidateRepository, AnswerCandidateOutputPort answerCandidateOutputPort) {
+    public CandidateOutputPort(CandidateRepository candidateRepository,
+                               AnswerCandidateOutputPort answerCandidateOutputPort,
+                               FavoriteCandidateOutputPort favoriteCandidateOutputPort,
+                               UserRepository userRepository) {
         this.candidateRepository = candidateRepository;
         this.answerCandidateOutputPort = answerCandidateOutputPort;
+        this.favoriteCandidateOutputPort = favoriteCandidateOutputPort;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -101,6 +115,16 @@ public class CandidateOutputPort implements ICandidateOutputPort {
         if (result == null) {
             return null;
         }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            UserDTO userDTO = (UserDTO) auth.getPrincipal();
+            String userId = userDTO.getId();
+            boolean fav = favoriteCandidateOutputPort.isFavorited(userId, id);
+            result.setFavorite(fav);
+        }
+
         return result;
     }
 

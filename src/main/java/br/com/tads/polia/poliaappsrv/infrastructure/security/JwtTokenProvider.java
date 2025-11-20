@@ -1,7 +1,9 @@
 package br.com.tads.polia.poliaappsrv.infrastructure.security;
 
+import br.com.tads.polia.poliaappsrv.domain.dto.user.UserDTO;
 import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
 import br.com.tads.polia.poliaappsrv.domain.entity.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -10,10 +12,10 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +85,45 @@ public class JwtTokenProvider {
                 .getBody()
                 .getExpiration();
         return expirationDate.getTime();
+    }
+
+    public boolean isTokenValid(String token) {
+        if (token == null) {
+            return false;
+        }
+        try {
+            Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        } catch (MalformedJwtException e) {
+            System.out.println("Token mal formado");
+        } catch (UnsupportedJwtException e) {
+            System.out.println("Token nao suportado");
+        } catch (ExpiredJwtException e) {
+            System.out.println("Token expirado");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Token nulo");
+        }
+        return false;
+    }
+
+    public UserDTO decodeUserFromToken(String token) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
+            Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+            Object userClaim = claims.get("user");
+            return objectMapper.convertValue(userClaim, UserDTO.class);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao decodificar usuário do token", e);
+        }
     }
 
 }
