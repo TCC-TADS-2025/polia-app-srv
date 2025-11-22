@@ -1,5 +1,6 @@
 package br.com.tads.polia.poliaappsrv.adapter.output;
 
+import br.com.tads.polia.poliaappsrv.adapter.output.bd.AnswerCandidateEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.AnswerEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.mapper.AnswerOutputMapper;
 import br.com.tads.polia.poliaappsrv.domain.entity.Answer;
@@ -79,5 +80,11 @@ public class AnswerOutputPort implements IAnswerOutputPort {
             return null;
         }
         return MAPPER.listAnswerEntityToAnswer(entidades);
+    }
+
+    @Override
+    public void deleteByUserId(String userId) {
+        List<AnswerEntity> answers = answerRepository.findByUserId_Id(userId);
+        answerRepository.deleteAll(answers);
     }
 }
