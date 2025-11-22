@@ -3,6 +3,8 @@ package br.com.tads.polia.poliaappsrv.adapter.output;
 import br.com.tads.polia.poliaappsrv.adapter.output.bd.AdminEntity;
 import br.com.tads.polia.poliaappsrv.adapter.output.mapper.AdminOutputMapper;
 import br.com.tads.polia.poliaappsrv.domain.entity.Admin;
+import br.com.tads.polia.poliaappsrv.infrastructure.email.EmailService;
+import br.com.tads.polia.poliaappsrv.infrastructure.util.PasswordGenerator;
 import br.com.tads.polia.poliaappsrv.port.output.IAdminOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.AdminRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,20 +23,32 @@ public class AdminOutputPort implements IAdminOutputPort {
 
     private final PasswordEncoder passwordEncoder;
     private final AdminRepository adminRepository;
+    private final EmailService emailService;
 
-    public AdminOutputPort(PasswordEncoder passwordEncoder, AdminRepository adminRepository) {
+    public AdminOutputPort(PasswordEncoder passwordEncoder, AdminRepository adminRepository, EmailService emailService) {
         this.passwordEncoder = passwordEncoder;
         this.adminRepository = adminRepository;
+        this.emailService = emailService;
     }
 
     @Override
     public Admin createAdmin(Admin admin) {
         admin.setPassword("1234");
+        
+       
         AdminEntity adminEntity = MAPPER.adminToAdminEntity(admin);
         adminEntity.setId(UUID.randomUUID().toString());
         adminEntity.setPassword(passwordEncoder.encode(admin.getPassword()));
         adminEntity.setEnabled(true);
+        String newPassword = PasswordGenerator.generateStrongPassword();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        adminEntity.setPassword(encodedPassword);
         adminRepository.save(adminEntity);
+        try {
+            emailService.sendPasswordEmail(adminEntity.getEmail(), newPassword);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao enviar email de senha", e);
+        }
         return MAPPER.adminEntityToAdmin(adminEntity);
     }
 
