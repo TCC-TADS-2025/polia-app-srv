@@ -8,4 +8,5 @@ public interface IAnswerOutputPort {
 
     List<Answer> createAnswers(List<Answer> answers);
     List<Answer> getAnswerById(String id);
+    void deleteByUserId(String userId);
 }

@@ -9,6 +9,8 @@ import br.com.tads.polia.poliaappsrv.domain.exception.EmailAlredyExistsException
 import br.com.tads.polia.poliaappsrv.port.output.IUserOutputPort;
 import br.com.tads.polia.poliaappsrv.port.output.bd.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,10 +26,12 @@ public class UserOutputPort implements IUserOutputPort {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final AnswerOutputPort answerOutputPort;
 
-    public UserOutputPort(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public UserOutputPort(PasswordEncoder passwordEncoder, UserRepository userRepository, AnswerOutputPort answerOutputPort) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.answerOutputPort = answerOutputPort;
     }
 
     @Override
@@ -72,8 +76,10 @@ public class UserOutputPort implements IUserOutputPort {
     }
 
     @Override
+    @Transactional
     public void deleteUserById(String id) {
         userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
+        answerOutputPort.deleteByUserId(id);
         userRepository.deleteById(id);
     }
 
